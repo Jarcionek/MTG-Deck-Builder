@@ -1,36 +1,27 @@
 package mtgdeckbuilder;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 
 public class CardsInfoDownloader {
 
-    private Url url;
-    private File file;
-
-    public void set(Url url, File file) {
-        this.url = url;
-        this.file = file;
-    }
-
-    public void download() {
+    public String download(Url url) {
         try {
             InputStream inputStream = url.unwrap().openStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            PrintWriter printWriter = new PrintWriter(file);
+            StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                printWriter.println(line);
+                stringBuilder.append(line);
             }
 
             bufferedReader.close();
-            printWriter.close();
+
+            return stringBuilder.toString();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
