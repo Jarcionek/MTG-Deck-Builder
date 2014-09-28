@@ -14,9 +14,16 @@ public class UrlDownloader {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
             StringBuilder stringBuilder = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
+
+            String line = bufferedReader.readLine();
+            while (true) {
                 stringBuilder.append(line);
+                line = bufferedReader.readLine();
+                if (line == null) {
+                    break;
+                } else {
+                    stringBuilder.append(System.getProperty("line.separator"));
+                }
             }
 
             bufferedReader.close();
