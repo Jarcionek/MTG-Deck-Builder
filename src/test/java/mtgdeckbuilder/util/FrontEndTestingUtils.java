@@ -12,6 +12,15 @@ import java.awt.event.WindowEvent;
 
 public class FrontEndTestingUtils {
 
+    public static boolean containsComponentRecursively(Container container, String componentName) {
+        try {
+            findComponentRecursively(container, componentName, Component.class);
+            return true;
+        } catch (NoSuchComponentException exception) {
+            return false;
+        }
+    }
+
     public static <T extends Component> T findComponent(Container container, String componentName, Class<T> requestedClass) {
         for (Component component : container.getComponents()) {
             if (component.getName() == null) {

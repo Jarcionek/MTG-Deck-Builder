@@ -5,8 +5,8 @@ public enum Field {
     description,
     flavor,
     color,
-    manacost,
-    convertedmanacost,
+    manacost("mana cost"),
+    convertedmanacost("converted mana cost"),
     type,
     subtype,
     power,
@@ -14,5 +14,21 @@ public enum Field {
     loyalty,
     rarity,
     artist,
-    setId
+    setId;
+
+    private final String displayableName;
+
+    private Field() {
+        this.displayableName = this.name();
+    }
+
+    private Field(String displayableName) {
+        this.displayableName = displayableName;
+    }
+
+    @Override
+    public String toString() {
+        return displayableName;
+    }
+
 }

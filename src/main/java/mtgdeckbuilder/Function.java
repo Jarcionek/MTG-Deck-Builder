@@ -9,15 +9,15 @@ public enum Function {
     lt("less than"),
     lte("less than or equal to");
 
-    private final String name;
+    private final String displayableName;
 
-    private Function(String name) {
-        this.name = name;
+    private Function(String displayableName) {
+        this.displayableName = displayableName;
     }
 
     @Override
     public String toString() {
-        return name;
+        return displayableName;
     }
 
 }
