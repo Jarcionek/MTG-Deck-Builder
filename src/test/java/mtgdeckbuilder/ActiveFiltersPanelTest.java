@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 
 import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.containsComponentRecursively;
-import static mtgdeckbuilder.util.FrontEndTestingUtils.displayAndWait;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,9 +41,6 @@ public class ActiveFiltersPanelTest {
         activeFiltersPanel.addFilter(new Filter(Field.subtype, Function.eq, "goblin"));
         activeFiltersPanel.addFilter(new Filter(Field.manacost, Function.gt, "0"));
         activeFiltersPanel.addFilter(new Filter(Field.description, Function.m, "end of turn"));
-
-        displayAndWait(activeFiltersPanel);
-
 
         JButton deleteFilterButton1 = findComponentRecursively(activeFiltersPanel, "deleteFilterButton1", JButton.class);
         click(deleteFilterButton1);

@@ -3,6 +3,7 @@ package mtgdeckbuilder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -11,10 +12,14 @@ import java.awt.event.ActionListener;
 
 public class ActiveFiltersPanel extends JPanel {
 
+    private final JPanel innerPanel;
+
     private int filterCount = 0;
 
     public ActiveFiltersPanel() {
-        this.setLayout(new GridLayout(0, 1));
+        this.innerPanel = new JPanel(new GridLayout(0, 1));
+        this.setLayout(new GridLayout(1, 1));
+        this.add(new JScrollPane(innerPanel));
     }
 
     public void addFilter(Filter filter) {
@@ -32,13 +37,13 @@ public class ActiveFiltersPanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ActiveFiltersPanel.this.remove(rowPanel);
+                ActiveFiltersPanel.this.innerPanel.remove(rowPanel);
                 ActiveFiltersPanel.this.revalidate();
                 ActiveFiltersPanel.this.repaint();
             }
         });
 
-        this.add(rowPanel);
+        this.innerPanel.add(rowPanel);
     }
 
 }
