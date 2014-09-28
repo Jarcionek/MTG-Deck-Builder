@@ -12,4 +12,16 @@ public class Filter {
         this.argument = argument;
     }
 
+    public Field getField() {
+        return field;
+    }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public String getArgument() {
+        return argument;
+    }
+
 }
