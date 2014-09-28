@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -18,12 +17,12 @@ import static org.junit.Assert.assertThat;
 
 public class CardsInfoDownloaderTest {
 
-    private URL url;
+    private Url url;
     private File file;
 
     @Before
     public void setUp() throws IOException {
-        url = new URL("http://api.mtgdb.info/cards/?fields=id,name&limit=2");
+        url = new Url("http://api.mtgdb.info/cards/?fields=id,name&limit=2");
         file = new File(CardsInfoDownloaderTest.class.getSimpleName() + "-url-as-text");
         Logger.getAnonymousLogger().info("Creating file " + file.getAbsolutePath());
         if (!file.createNewFile()) {
@@ -41,7 +40,10 @@ public class CardsInfoDownloaderTest {
 
     @Test
     public void test() throws FileNotFoundException {
-        new CardsInfoDownloader(url, file).download();
+        CardsInfoDownloader cardsInfoDownloader = new CardsInfoDownloader();
+        cardsInfoDownloader.set(url, file);
+
+        cardsInfoDownloader.download();
 
         assertThat(asString(file), is(equalTo("[{\"id\":1,\"name\":\"Ankh of Mishra\"},{\"id\":2,\"name\":\"Basalt Monolith\"}]")));
     }
