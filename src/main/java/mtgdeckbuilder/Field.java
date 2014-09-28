@@ -14,7 +14,7 @@ public enum Field {
     loyalty,
     rarity,
     artist,
-    setId;
+    setId("set id");
 
     private final String displayableName;
 

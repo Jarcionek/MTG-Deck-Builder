@@ -1,5 +1,6 @@
 package mtgdeckbuilder;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.JButton;
@@ -18,7 +19,12 @@ public class NewFilterPanelTest {
 
     private AddFilterListener addFilterListener = mock(AddFilterListener.class);
 
-    private NewFilterPanel newFilterPanel = new NewFilterPanel(addFilterListener);
+    private NewFilterPanel newFilterPanel = new NewFilterPanel();
+
+    @Before
+    public void setUp() {
+        newFilterPanel.setAddFilterListener(addFilterListener);
+    }
 
     @Test
     public void callsAddFilterListener() {

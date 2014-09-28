@@ -51,6 +51,8 @@ public class ActiveFiltersPanel extends JPanel {
         setNames(label, button);
 
         this.innerPanel.add(rowPanel);
+        this.revalidate();
+        this.repaint();
     }
 
     @TestCode

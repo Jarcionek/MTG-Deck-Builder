@@ -16,18 +16,21 @@ public class NewFilterPanel extends JPanel {
     private final JTextField argumentTextField;
     private final JButton addButton;
 
-    private final AddFilterListener addFilterListener;
+    private AddFilterListener addFilterListener;
 
-    public NewFilterPanel(final AddFilterListener addFilterListener) {
+    public NewFilterPanel() {
         this.fieldComboBox = new JComboBox<Field>(Field.values());
         this.functionComboBox = new JComboBox<Function>(Function.values());
         this.argumentTextField = new JTextField();
         this.addButton = new JButton("+");
-        this.addFilterListener = addFilterListener;
 
         setComponentsNames();
         configureComponents();
         createLayout();
+    }
+
+    public void setAddFilterListener(AddFilterListener addFilterListener) {
+        this.addFilterListener = addFilterListener;
     }
 
     @TestCode
