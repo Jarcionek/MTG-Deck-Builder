@@ -1,10 +1,13 @@
 package mtgdeckbuilder;
 
+import com.shazam.shazamcrest.MatcherAssert;
 import org.junit.Test;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static java.util.Arrays.asList;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.containsComponentRecursively;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
@@ -38,9 +41,12 @@ public class ActiveFiltersPanelTest {
 
     @Test
     public void canDeleteFilter() {
-        activeFiltersPanel.addFilter(new Filter(Field.subtype, Function.eq, "goblin"));
-        activeFiltersPanel.addFilter(new Filter(Field.manacost, Function.gt, "0"));
-        activeFiltersPanel.addFilter(new Filter(Field.description, Function.m, "end of turn"));
+        Filter filter0 = new Filter(Field.subtype, Function.eq, "goblin");
+        Filter filter1 = new Filter(Field.manacost, Function.gt, "0");
+        Filter filter2 = new Filter(Field.description, Function.m, "end of turn");
+        activeFiltersPanel.addFilter(filter0);
+        activeFiltersPanel.addFilter(filter1);
+        activeFiltersPanel.addFilter(filter2);
 
         JButton deleteFilterButton1 = findComponentRecursively(activeFiltersPanel, "deleteFilterButton1", JButton.class);
         click(deleteFilterButton1);
@@ -52,6 +58,7 @@ public class ActiveFiltersPanelTest {
         assertThat("Expected filterLabel2 component but not found",        containsComponentRecursively(activeFiltersPanel, "filterLabel2"),        is(equalTo(true)));
         assertThat("Expected deleteFilterButton2 component but not found", containsComponentRecursively(activeFiltersPanel, "deleteFilterButton2"), is(equalTo(true)));
 
+        MatcherAssert.assertThat(activeFiltersPanel.getFilters(), sameBeanAs(asList(filter0, filter2)));
     }
 
 }
