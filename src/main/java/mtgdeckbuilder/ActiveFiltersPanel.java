@@ -14,7 +14,7 @@ public class ActiveFiltersPanel extends JPanel {
 
     private final JPanel innerPanel;
 
-    private int filterCount = 0;
+    @TestCode private int filterCount = 0;
 
     public ActiveFiltersPanel() {
         this.innerPanel = new JPanel(new GridLayout(0, 1));
@@ -26,14 +26,11 @@ public class ActiveFiltersPanel extends JPanel {
         final JPanel rowPanel = new JPanel(new BorderLayout());
 
         JLabel label = new JLabel(filter.getField() + " " + filter.getFunction() + " " + filter.getArgument());
-        label.setName("filterLabel" + filterCount);
         label.setFont(new Font("arial", Font.PLAIN, 12));
         rowPanel.add(label, BorderLayout.CENTER);
 
         JButton button = new JButton("-");
-        button.setName("deleteFilterButton" + filterCount++);
         button.setFocusable(false);
-        rowPanel.add(button, BorderLayout.EAST);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,8 +39,18 @@ public class ActiveFiltersPanel extends JPanel {
                 ActiveFiltersPanel.this.repaint();
             }
         });
+        rowPanel.add(button, BorderLayout.EAST);
+
+        setNames(label, button);
 
         this.innerPanel.add(rowPanel);
+    }
+
+    @TestCode
+    private void setNames(JLabel label, JButton button) {
+        label.setName("filterLabel" + filterCount);
+        button.setName("deleteFilterButton" + filterCount);
+        filterCount++;
     }
 
 }

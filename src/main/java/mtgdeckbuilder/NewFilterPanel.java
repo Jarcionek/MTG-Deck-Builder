@@ -15,6 +15,7 @@ public class NewFilterPanel extends JPanel {
     private final JComboBox<Function> functionComboBox;
     private final JTextField argumentTextField;
     private final JButton addButton;
+
     private final AddFilterListener addFilterListener;
 
     public NewFilterPanel(final AddFilterListener addFilterListener) {
@@ -24,12 +25,13 @@ public class NewFilterPanel extends JPanel {
         this.addButton = new JButton("+");
         this.addFilterListener = addFilterListener;
 
-        nameComponents();
+        setComponentsNames();
         configureComponents();
         createLayout();
     }
 
-    private void nameComponents() {
+    @TestCode
+    private void setComponentsNames() {
         this.fieldComboBox.setName("fieldComboBox");
         this.functionComboBox.setName("functionComboBox");
         this.argumentTextField.setName("argumentTextField");
