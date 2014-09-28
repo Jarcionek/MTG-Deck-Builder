@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,11 +51,15 @@ public class NewFilterPanel extends JPanel {
     }
 
     private void createLayout() {
-        this.setLayout(new GridLayout(1, 4));
-        this.add(fieldComboBox);
-        this.add(functionComboBox);
-        this.add(argumentTextField);
-        this.add(addButton);
+        this.setLayout(new BorderLayout());
+
+        JPanel centralPanel = new JPanel(new GridLayout(1, 3));
+        centralPanel.add(fieldComboBox);
+        centralPanel.add(functionComboBox);
+        centralPanel.add(argumentTextField);
+
+        this.add(centralPanel, BorderLayout.CENTER);
+        this.add(addButton, BorderLayout.EAST);
     }
 
 }

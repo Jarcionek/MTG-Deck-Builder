@@ -1,4 +1,4 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.util;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,17 +9,55 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.NoSuchElementException;
 
 public class FrontEndTestingUtils {
 
     public static <T extends Component> T findComponent(Container container, String componentName, Class<T> requestedClass) {
         for (Component component : container.getComponents()) {
+            if (component.getName() == null) {
+                continue; // component has no name
+            }
             if (component.getName().equals(componentName)) {
                 return requestedClass.cast(component);
             }
         }
-        throw new NoSuchElementException("No component named " + componentName + " in container " + container);
+        throw new NoSuchComponentException(container, componentName);
+    }
+
+    public static <T extends Component> T findComponentRecursively(Container container, String componentName, Class<T> requestedClass) {
+        T componentFound = fcr(container, componentName, requestedClass);
+        if (componentFound == null) {
+            throw new NoSuchComponentException(container, componentName);
+        } else {
+            return componentFound;
+        }
+    }
+
+    private static <T extends Component> T fcr(Container container, String componentName, Class<T> requestedClass) {
+        T componentFound = null;
+        for (Component component : container.getComponents()) {
+            if (component instanceof Container) {
+                T nestedComponentFound = fcr((Container) component, componentName, requestedClass);
+                if (nestedComponentFound != null) {
+                    if (componentFound == null) {
+                        componentFound = nestedComponentFound;
+                    } else {
+                        throw new NoUniqueComponentException(container, componentName);
+                    }
+                }
+            }
+            if (component.getName() == null) {
+                continue; // component has no name
+            }
+            if (component.getName().equals(componentName)) {
+                if (componentFound != null) {
+                    throw new NoUniqueComponentException(container, componentName);
+                } else {
+                    componentFound = requestedClass.cast(component);
+                }
+            }
+        }
+        return componentFound;
     }
 
     public static void click(JButton button) {

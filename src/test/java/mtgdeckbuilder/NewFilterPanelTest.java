@@ -7,8 +7,8 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
-import static mtgdeckbuilder.FrontEndTestingUtils.click;
-import static mtgdeckbuilder.FrontEndTestingUtils.findComponent;
+import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
+import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -22,16 +22,16 @@ public class NewFilterPanelTest {
 
     @Test
     public void callsAddFilterListener() {
-        JComboBox<?> fieldComboBox = findComponent(newFilterPanel, "fieldComboBox", JComboBox.class);
+        JComboBox<?> fieldComboBox = findComponentRecursively(newFilterPanel, "fieldComboBox", JComboBox.class);
         fieldComboBox.setSelectedItem(Field.convertedmanacost);
 
-        JComboBox<?> functionComboBox = findComponent(newFilterPanel, "functionComboBox", JComboBox.class);
+        JComboBox<?> functionComboBox = findComponentRecursively(newFilterPanel, "functionComboBox", JComboBox.class);
         functionComboBox.setSelectedItem(Function.lt);
 
-        JTextField argumentTextFiled = findComponent(newFilterPanel, "argumentTextField", JTextField.class);
+        JTextField argumentTextFiled = findComponentRecursively(newFilterPanel, "argumentTextField", JTextField.class);
         argumentTextFiled.setText("20");
 
-        JButton addButton = findComponent(newFilterPanel, "addButton", JButton.class);
+        JButton addButton = findComponentRecursively(newFilterPanel, "addButton", JButton.class);
         click(addButton);
 
         verify(addFilterListener, times(1)).addFilter(argThat(sameBeanAs(new Filter(Field.convertedmanacost, Function.lt, "20"))));
