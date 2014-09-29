@@ -14,16 +14,16 @@ public class AddFilterTopicTest {
 
     private static final Filter FILTER = new Filter(Field.artist, Function.gte, "123");
 
-    private AddFilterTopic addFilterTopic = new AddFilterTopic();
+    private AddFilterTopic topic = new AddFilterTopic();
 
     @Test
     public void notifiesSubscribers() {
         AddFilterTopic.Subscriber subscriberOne = mock(AddFilterTopic.Subscriber.class);
         AddFilterTopic.Subscriber subscriberTwo = mock(AddFilterTopic.Subscriber.class);
-        addFilterTopic.addSubscriber(subscriberOne);
-        addFilterTopic.addSubscriber(subscriberTwo);
+        topic.addSubscriber(subscriberOne);
+        topic.addSubscriber(subscriberTwo);
 
-        addFilterTopic.post(FILTER);
+        topic.post(FILTER);
 
         verify(subscriberOne, times(1)).filterAdded(FILTER);
         verify(subscriberTwo, times(1)).filterAdded(FILTER);

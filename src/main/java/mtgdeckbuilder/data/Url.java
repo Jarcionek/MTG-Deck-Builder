@@ -5,18 +5,18 @@ import java.net.URL;
 
 public class Url {
 
-    private final URL url;
+    private final String url;
 
     public Url(String url) {
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException exception) {
-            throw new RuntimeException(exception);
-        }
+        this.url = url;
     }
 
     public URL unwrap() {
-        return url;
+        try {
+            return new URL(url);
+        } catch (MalformedURLException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }
