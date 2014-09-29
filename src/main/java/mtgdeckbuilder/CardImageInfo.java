@@ -1,9 +1,13 @@
 package mtgdeckbuilder;
 
-//TODO Jarek: implement!
 public class CardImageInfo {
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
+
+    public CardImageInfo(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 }
