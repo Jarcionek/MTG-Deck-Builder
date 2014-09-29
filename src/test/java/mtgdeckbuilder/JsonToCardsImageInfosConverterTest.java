@@ -84,7 +84,7 @@ public class JsonToCardsImageInfosConverterTest {
                         "{" +
                             "\"id\":1397," +
                             "\"name\":\"Plains\"," +
-                            "\"releasedAt\":\"1994-04-01\"" +
+                            "\"releasedAt\":\"2012-04-01\"" +
                         "}," +
                         "{" +
                             "\"id\":597," +
@@ -94,7 +94,7 @@ public class JsonToCardsImageInfosConverterTest {
                         "{" +
                             "\"id\":2386," +
                             "\"name\":\"Plains\"," +
-                            "\"releasedAt\":\"2012-04-01\"" +
+                            "\"releasedAt\":\"2012-04-02\"" +
                         "}," +
                         "{" +
                             "\"id\":899," +
