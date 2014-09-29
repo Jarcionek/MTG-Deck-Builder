@@ -50,7 +50,7 @@ public class NewFilterPanel extends JPanel {
                 Field field = (Field) fieldComboBox.getSelectedItem();
                 Function function = (Function) functionComboBox.getSelectedItem();
                 String argument = argumentTextField.getText();
-                addFilterListener.addFilter(new Filter(field, function, argument));
+                addFilterListener.addedFilter(new Filter(field, function, argument));
             }
         });
     }

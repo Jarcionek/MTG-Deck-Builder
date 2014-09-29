@@ -40,7 +40,7 @@ public class NewFilterPanelTest {
         JButton addButton = findComponentRecursively(newFilterPanel, "addButton", JButton.class);
         click(addButton);
 
-        verify(addFilterListener, times(1)).addFilter(argThat(sameBeanAs(new Filter(Field.convertedmanacost, Function.lt, "20"))));
+        verify(addFilterListener, times(1)).addedFilter(argThat(sameBeanAs(new Filter(Field.convertedmanacost, Function.lt, "20"))));
     }
 
 }

@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
 
         AddFilterListener addFilterListener = new AddFilterListener() {
             @Override
-            public void addFilter(Filter filter) {
+            public void addedFilter(Filter filter) {
                 activeFiltersPanel.addFilter(filter);
             }
         };
