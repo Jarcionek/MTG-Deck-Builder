@@ -1,7 +1,5 @@
 package mtgdeckbuilder.frontend;
 
-import mtgdeckbuilder.data.Filter;
-
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 
@@ -15,16 +13,10 @@ public class MainFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        this.newFilterPanel = new NewFilterPanel();
-        this.activeFiltersPanel = new ActiveFiltersPanel();
+        AddFilterTopic addFilterTopic = new AddFilterTopic();
 
-        AddFilterListener addFilterListener = new AddFilterListener() {
-            @Override
-            public void addedFilter(Filter filter) {
-                activeFiltersPanel.addFilter(filter);
-            }
-        };
-        newFilterPanel.setAddFilterListener(addFilterListener);
+        this.newFilterPanel = new NewFilterPanel(addFilterTopic);
+        this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
 
         this.setLayout(new BorderLayout());
         this.add(newFilterPanel, BorderLayout.NORTH);

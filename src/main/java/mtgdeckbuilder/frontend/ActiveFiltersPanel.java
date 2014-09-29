@@ -15,21 +15,24 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActiveFiltersPanel extends JPanel {
+public class ActiveFiltersPanel extends JPanel implements AddFilterTopic.Subscriber {
 
     private final JPanel innerPanel;
     private final List<Filter> filters;
 
     @TestCode private int filterCount = 0;
 
-    public ActiveFiltersPanel() {
+    public ActiveFiltersPanel(AddFilterTopic addFilterTopic) {
+        addFilterTopic.addSubscriber(this);
+
         this.innerPanel = new JPanel(new GridLayout(0, 1));
         this.setLayout(new GridLayout(1, 1));
         this.add(new JScrollPane(innerPanel));
         this.filters = new ArrayList<Filter>();
     }
 
-    public void addFilter(final Filter filter) {
+    @Override
+    public void filterAdded(final Filter filter) {
         filters.add(filter);
 
         final JPanel rowPanel = new JPanel(new BorderLayout());

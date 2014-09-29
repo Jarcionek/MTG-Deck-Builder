@@ -17,14 +17,23 @@ import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ActiveFiltersPanelTest {
 
-    private ActiveFiltersPanel activeFiltersPanel = new ActiveFiltersPanel();
+    private AddFilterTopic addFilterTopic = mock(AddFilterTopic.class);
+
+    private ActiveFiltersPanel activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
+
+    @Test
+    public void subscribesToAddFilterTopic() {
+        verify(addFilterTopic).addSubscriber(activeFiltersPanel);
+    }
 
     @Test
     public void displaysNewlyAddedFilter() {
-        activeFiltersPanel.addFilter(new Filter(Field.rarity, Function.eq, "rare"));
+        activeFiltersPanel.filterAdded(new Filter(Field.rarity, Function.eq, "rare"));
 
         JLabel filterLabel = findComponentRecursively(activeFiltersPanel, "filterLabel0", JLabel.class);
         assertThat(filterLabel.getText(), is(equalTo("rarity equal to rare")));
@@ -32,8 +41,8 @@ public class ActiveFiltersPanelTest {
 
     @Test
     public void displaysTwoNewlyAddedFilters() {
-        activeFiltersPanel.addFilter(new Filter(Field.type, Function.m, "enchantment"));
-        activeFiltersPanel.addFilter(new Filter(Field.convertedmanacost, Function.gte, "4"));
+        activeFiltersPanel.filterAdded(new Filter(Field.type, Function.m, "enchantment"));
+        activeFiltersPanel.filterAdded(new Filter(Field.convertedmanacost, Function.gte, "4"));
 
         JLabel filterLabel0 = findComponentRecursively(activeFiltersPanel, "filterLabel0", JLabel.class);
         assertThat(filterLabel0.getText(), is(equalTo("type contains enchantment")));
@@ -47,9 +56,9 @@ public class ActiveFiltersPanelTest {
         Filter filter0 = new Filter(Field.subtype, Function.eq, "goblin");
         Filter filter1 = new Filter(Field.manacost, Function.gt, "0");
         Filter filter2 = new Filter(Field.description, Function.m, "end of turn");
-        activeFiltersPanel.addFilter(filter0);
-        activeFiltersPanel.addFilter(filter1);
-        activeFiltersPanel.addFilter(filter2);
+        activeFiltersPanel.filterAdded(filter0);
+        activeFiltersPanel.filterAdded(filter1);
+        activeFiltersPanel.filterAdded(filter2);
 
         JButton deleteFilterButton1 = findComponentRecursively(activeFiltersPanel, "deleteFilterButton1", JButton.class);
         click(deleteFilterButton1);

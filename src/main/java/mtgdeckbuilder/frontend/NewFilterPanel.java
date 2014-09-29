@@ -16,14 +16,16 @@ import java.awt.event.ActionListener;
 
 public class NewFilterPanel extends JPanel {
 
+    private final AddFilterTopic addFilterTopic;
+
     private final JComboBox<Field> fieldComboBox;
     private final JComboBox<Function> functionComboBox;
     private final JTextField argumentTextField;
     private final JButton addButton;
 
-    private AddFilterListener addFilterListener;
+    public NewFilterPanel(AddFilterTopic addFilterTopic) {
+        this.addFilterTopic = addFilterTopic;
 
-    public NewFilterPanel() {
         this.fieldComboBox = new JComboBox<Field>(Field.values());
         this.functionComboBox = new JComboBox<Function>(Function.values());
         this.argumentTextField = new JTextField();
@@ -32,10 +34,6 @@ public class NewFilterPanel extends JPanel {
         setComponentsNames();
         configureComponents();
         createLayout();
-    }
-
-    public void setAddFilterListener(AddFilterListener addFilterListener) {
-        this.addFilterListener = addFilterListener;
     }
 
     @TestCode
@@ -55,7 +53,7 @@ public class NewFilterPanel extends JPanel {
                 Field field = (Field) fieldComboBox.getSelectedItem();
                 Function function = (Function) functionComboBox.getSelectedItem();
                 String argument = argumentTextField.getText();
-                addFilterListener.addedFilter(new Filter(field, function, argument));
+                addFilterTopic.post(new Filter(field, function, argument));
             }
         });
     }

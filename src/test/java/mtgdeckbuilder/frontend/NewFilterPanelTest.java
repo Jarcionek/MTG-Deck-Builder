@@ -3,7 +3,6 @@ package mtgdeckbuilder.frontend;
 import mtgdeckbuilder.data.Field;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Function;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.JButton;
@@ -20,14 +19,9 @@ import static org.mockito.Mockito.verify;
 
 public class NewFilterPanelTest {
 
-    private AddFilterListener addFilterListener = mock(AddFilterListener.class);
+    private AddFilterTopic addFilterTopic = mock(AddFilterTopic.class);
 
-    private NewFilterPanel newFilterPanel = new NewFilterPanel();
-
-    @Before
-    public void setUp() {
-        newFilterPanel.setAddFilterListener(addFilterListener);
-    }
+    private NewFilterPanel newFilterPanel = new NewFilterPanel(addFilterTopic);
 
     @Test
     public void callsAddFilterListener() {
@@ -43,7 +37,7 @@ public class NewFilterPanelTest {
         JButton addButton = findComponentRecursively(newFilterPanel, "addButton", JButton.class);
         click(addButton);
 
-        verify(addFilterListener, times(1)).addedFilter(argThat(sameBeanAs(new Filter(Field.convertedmanacost, Function.lt, "20"))));
+        verify(addFilterTopic, times(1)).post(argThat(sameBeanAs(new Filter(Field.convertedmanacost, Function.lt, "20"))));
     }
 
 }
