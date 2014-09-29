@@ -1,4 +1,6 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.backend;
+
+import mtgdeckbuilder.data.Filter;
 
 import java.util.List;
 

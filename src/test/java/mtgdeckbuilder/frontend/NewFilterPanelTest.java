@@ -1,5 +1,8 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
 
+import mtgdeckbuilder.data.Field;
+import mtgdeckbuilder.data.Filter;
+import mtgdeckbuilder.data.Function;
 import org.junit.Before;
 import org.junit.Test;
 

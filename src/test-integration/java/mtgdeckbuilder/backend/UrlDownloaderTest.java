@@ -1,5 +1,6 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.backend;
 
+import mtgdeckbuilder.data.Url;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;

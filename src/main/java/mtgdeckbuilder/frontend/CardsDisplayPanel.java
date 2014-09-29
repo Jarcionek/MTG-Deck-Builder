@@ -1,4 +1,4 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
 
 //TODO Jarek: implement!
 /*

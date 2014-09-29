@@ -1,4 +1,9 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
+
+import mtgdeckbuilder.backend.CardImageDownloader;
+import mtgdeckbuilder.backend.FilterToUrlConverter;
+import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
+import mtgdeckbuilder.backend.UrlDownloader;
 
 import javax.swing.JLabel;
 

@@ -1,6 +1,9 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
 
 import com.shazam.shazamcrest.MatcherAssert;
+import mtgdeckbuilder.data.Field;
+import mtgdeckbuilder.data.Filter;
+import mtgdeckbuilder.data.Function;
 import org.junit.Test;
 
 import javax.swing.JButton;

@@ -1,4 +1,4 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.data;
 
 public class CardImageInfo {
 

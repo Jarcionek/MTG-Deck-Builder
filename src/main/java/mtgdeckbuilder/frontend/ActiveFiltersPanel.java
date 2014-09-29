@@ -1,4 +1,7 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
+
+import mtgdeckbuilder.TestCode;
+import mtgdeckbuilder.data.Filter;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;

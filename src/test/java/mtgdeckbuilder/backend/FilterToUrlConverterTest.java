@@ -1,5 +1,8 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.backend;
 
+import mtgdeckbuilder.data.Field;
+import mtgdeckbuilder.data.Filter;
+import mtgdeckbuilder.data.Function;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;

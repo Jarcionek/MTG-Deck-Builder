@@ -1,4 +1,4 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.data;
 
 import java.net.MalformedURLException;
 import java.net.URL;

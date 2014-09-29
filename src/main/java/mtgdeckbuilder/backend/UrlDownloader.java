@@ -1,4 +1,6 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.backend;
+
+import mtgdeckbuilder.data.Url;
 
 import java.io.BufferedReader;
 import java.io.IOException;

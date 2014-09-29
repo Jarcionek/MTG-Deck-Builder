@@ -1,4 +1,9 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
+
+import mtgdeckbuilder.TestCode;
+import mtgdeckbuilder.data.Field;
+import mtgdeckbuilder.data.Filter;
+import mtgdeckbuilder.data.Function;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;

@@ -1,4 +1,6 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.frontend;
+
+import mtgdeckbuilder.data.Filter;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;

@@ -1,5 +1,6 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.backend;
 
+import mtgdeckbuilder.data.CardImageInfo;
 import org.junit.Test;
 
 import java.util.Set;

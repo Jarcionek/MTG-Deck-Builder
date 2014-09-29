@@ -1,4 +1,6 @@
-package mtgdeckbuilder;
+package mtgdeckbuilder.backend;
+
+import mtgdeckbuilder.data.CardImageInfo;
 
 import java.util.List;
 
