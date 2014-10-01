@@ -12,6 +12,9 @@ public class ImageDownloader {
 
     public void download(Url url, File file) {
         try {
+            if (file.getParentFile() != null && !file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
             file.createNewFile();
 
             InputStream inputStream = url.unwrap().openStream();
