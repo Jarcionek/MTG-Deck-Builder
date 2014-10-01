@@ -2,12 +2,15 @@ package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.backend.CardImageDownloader;
 import mtgdeckbuilder.backend.FilterToUrlConverter;
+import mtgdeckbuilder.backend.ImageDownloader;
 import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
 import mtgdeckbuilder.backend.UrlDownloader;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.io.File;
 
+//TODO Jarek: untested!
 public class MainFrame extends JFrame {
 
     private final NewFilterPanel newFilterPanel;
@@ -28,7 +31,7 @@ public class MainFrame extends JFrame {
                 new FilterToUrlConverter(),
                 new UrlDownloader(),
                 new JsonToCardsImageInfosConverter(),
-                new CardImageDownloader(),
+                new CardImageDownloader(new File("C:\\Users\\Jarcionek\\Desktop\\Cards"), new ImageDownloader()), //TODO Jarek: harcoded value!
                 new SearchTopic()
         );
 

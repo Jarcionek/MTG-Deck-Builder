@@ -19,4 +19,19 @@ public class Url {
         }
     }
 
+    @Override
+    public boolean equals(Object that) {
+        return that != null && this.getClass().equals(that.getClass()) && this.url.equals(((Url) that).url);
+    }
+
+    @Override
+    public int hashCode() {
+        return url == null ? 0 : url.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return url;
+    }
+
 }
