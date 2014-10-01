@@ -30,9 +30,16 @@ public class CardImageDownloader {
         }
         System.out.println("=======================================");
         for (CardImageInfo cardImageInfo : cardImageInfos) {
-            System.out.println("downloading: " + cardImageInfo.getName());
-            imageDownloader.download(new Url(LOW_RES_URL + cardImageInfo.getId() + LOW_RES_EXT), new File(cardsDirectory, "low/" + cardImageInfo.getName() + ".jpg"));
-            imageDownloader.download(new Url(HIGH_RES_URL + cardImageInfo.getId() + HIGH_RES_EXT), new File(cardsDirectory, "high/" + cardImageInfo.getName() + ".jpg"));
+            File lowResFile = new File(cardsDirectory, "low/" + cardImageInfo.getName() + ".jpg");
+            if (!lowResFile.exists()) {
+                System.out.println("downloading low: " + cardImageInfo.getName());
+                imageDownloader.download(new Url(LOW_RES_URL + cardImageInfo.getId() + LOW_RES_EXT), lowResFile);
+            }
+            File highResFile = new File(cardsDirectory, "high/" + cardImageInfo.getName() + ".jpg");
+            if (!highResFile.exists()) {
+                System.out.println("downloading high: " + cardImageInfo.getName());
+                imageDownloader.download(new Url(HIGH_RES_URL + cardImageInfo.getId() + HIGH_RES_EXT), highResFile);
+            }
         }
         System.out.println("=======================================");
     }

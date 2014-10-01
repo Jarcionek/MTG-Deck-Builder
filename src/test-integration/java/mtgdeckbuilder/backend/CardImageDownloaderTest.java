@@ -7,11 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class CardImageDownloaderTest {
 
@@ -54,6 +56,30 @@ public class CardImageDownloaderTest {
         verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/hi_res_card_images/35.jpg"), HIGH_RES_FILE_ONE);
     }
 
-    //TODO Jarek: should not be redownloading existing images
+    @Test
+    public void doesNotDownloadHighResCardsIfTheyAlreadyExist() throws IOException {
+        HIGH_RES_IMAGES_DIRECTORY.mkdirs();
+        HIGH_RES_FILE_ONE.createNewFile();
+        HIGH_RES_FILE_TWO.createNewFile();
+
+        cardImageDownloader.download(newHashSet(new CardImageInfo(12, "one"), new CardImageInfo(17, "two")));
+
+        verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/card_images/12.jpeg"), LOW_RES_FILE_ONE);
+        verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/card_images/17.jpeg"), LOW_RES_FILE_TWO);
+        verifyNoMoreInteractions(imageDownloader);
+    }
+
+    @Test
+    public void doesNotDownloadLowResCardsIfTheyAlreadyExist() throws IOException {
+        LOW_RES_IMAGES_DIRECTORY.mkdirs();
+        LOW_RES_FILE_ONE.createNewFile();
+        LOW_RES_FILE_THREE.createNewFile();
+
+        cardImageDownloader.download(newHashSet(new CardImageInfo(1, "three"), new CardImageInfo(77777, "one")));
+
+        verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/hi_res_card_images/1.jpg"), HIGH_RES_FILE_THREE);
+        verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/hi_res_card_images/77777.jpg"), HIGH_RES_FILE_ONE);
+        verifyNoMoreInteractions(imageDownloader);
+    }
 
 }
