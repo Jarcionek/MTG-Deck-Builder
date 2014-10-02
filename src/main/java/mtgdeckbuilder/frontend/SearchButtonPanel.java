@@ -55,11 +55,12 @@ public class SearchButtonPanel extends JPanel {
                 if (filters.isEmpty()) {
                     return;
                 }
+                //TODO Jarek: this shouldn't be done on event dispatch thread but on background swing worker firing regular progress updates
                 String url = filterToUrlConverter.convert(filters);
                 String json = urlDownloader.download(new Url(url));
                 Set<CardImageInfo> cardImageInfos = jsonToCardsImageInfosConverter.convert(json);
                 cardImageDownloader.download(cardImageInfos);
-                searchTopic.notifySearchFinished();
+                searchTopic.notifySearchFinished(cardImageInfos);
             }
         });
     }

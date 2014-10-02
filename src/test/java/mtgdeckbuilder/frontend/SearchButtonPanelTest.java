@@ -56,7 +56,7 @@ public class SearchButtonPanelTest {
         click(searchButton);
 
         verify(cardImageDownloader, times(1)).download(CARD_IMAGE_INFOS);
-        verify(searchTopic, times(1)).notifySearchFinished();
+        verify(searchTopic, times(1)).notifySearchFinished(CARD_IMAGE_INFOS);
     }
 
     @Test
