@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static mtgdeckbuilder.Utils.assertImagesEqual;
+import static mtgdeckbuilder.Utils.loadResourceImage;
 import static org.junit.Assert.assertEquals;
 
 public class ImageDownloaderTest {
@@ -19,7 +21,7 @@ public class ImageDownloaderTest {
     private static final File FILE_IN_NON_EXISTING_DIRECTORY = new File(ImageDownloaderTest.class.getSimpleName() + "-dir",
                                                                         ImageDownloaderTest.class.getSimpleName() + "-file.jpg");
 
-    private static final BufferedImage EXPECTED_IMAGE = loadExpectedImage();
+    private static final BufferedImage EXPECTED_IMAGE = loadResourceImage("ImageDownloaderTest-expectedfile.jpg");
 
     private ImageDownloader imageDownloader = new ImageDownloader();
 
@@ -45,25 +47,6 @@ public class ImageDownloaderTest {
 
         assertEquals("file.exists()", FILE_IN_NON_EXISTING_DIRECTORY.exists(), true);
         assertImagesEqual(EXPECTED_IMAGE, ImageIO.read(FILE_IN_NON_EXISTING_DIRECTORY));
-    }
-
-
-    private static void assertImagesEqual(BufferedImage expected, BufferedImage actual) {
-        assertEquals("Image width mismatch", expected.getWidth(), actual.getWidth());
-        assertEquals("Image height mismatch", expected.getHeight(), actual.getHeight());
-        for (int x = 0; x < actual.getWidth(); x++) {
-            for (int y = 0; y < actual.getHeight(); y++) {
-                assertEquals("Pixel mismatch (width=" + x + ",height=" + y + ")", expected.getRGB(x, y), actual.getRGB(x, y));
-            }
-        }
-    }
-
-    private static BufferedImage loadExpectedImage() {
-        try {
-            return ImageIO.read(ImageDownloaderTest.class.getResource("ImageDownloaderTest-expectedfile.jpg"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
