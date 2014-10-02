@@ -1,13 +1,17 @@
 package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.data.CardImageInfo;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.swing.JLabel;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
 import static mtgdeckbuilder.util.FrontEndTestingUtils.containsComponentRecursively;
+import static mtgdeckbuilder.util.FrontEndTestingUtils.displayAndWait;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,6 +42,16 @@ public class CardsDisplayPanelTest {
 
         assertThat("contains card 1", containsComponentRecursively(cardsDisplayPanel, "cardLabel0"), is(equalTo(true)));
         assertThat("contains card 2", containsComponentRecursively(cardsDisplayPanel, "cardLabel1"), is(equalTo(true)));
+    }
+
+    @Ignore
+    @Test
+    public void manualFrontEndTest() throws URISyntaxException {
+        cardsDisplayPanel = new CardsDisplayPanel(new CardImageLoader(new File(this.getClass().getResource("cards").toURI())));
+
+        cardsDisplayPanel.load(set("AEther Adept", "Ajani's Pridemate", "Black Cat", "Cone of Flame", "Elvish Mystic"));
+
+        displayAndWait(cardsDisplayPanel);
     }
 
 

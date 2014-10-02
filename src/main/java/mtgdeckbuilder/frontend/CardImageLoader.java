@@ -15,18 +15,20 @@ public class CardImageLoader {
     }
 
     public JLabel loadLowRes(String cardName) {
+        File file = new File(cardsDirectory, "low/" + cardName + ".jpg");
         try {
-            return new JLabel(new ImageIcon(ImageIO.read(new File(cardsDirectory, "low/" + cardName + ".jpg"))));
+            return new JLabel(new ImageIcon(ImageIO.read(file)));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(file.getAbsolutePath(), e);
         }
     }
 
     public JLabel loadHighRes(String cardName) {
+        File file = new File(cardsDirectory, "high/" + cardName + ".jpg");
         try {
-            return new JLabel(new ImageIcon(ImageIO.read(new File(cardsDirectory, "high/" + cardName + ".jpg"))));
+            return new JLabel(new ImageIcon(ImageIO.read(file)));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(file.getAbsolutePath(), e);
         }
     }
 
