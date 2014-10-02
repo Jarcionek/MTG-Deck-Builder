@@ -14,6 +14,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//TODO Jarek: card name: Ajani's Pridemate - apostrophe is illegal character
+//TODO Jarek: card name: Æther Adept - Æ is illegal character (use AE instead)
 public class NewFilterPanel extends JPanel {
 
     private final AddFilterTopic addFilterTopic;
@@ -26,8 +28,8 @@ public class NewFilterPanel extends JPanel {
     public NewFilterPanel(AddFilterTopic addFilterTopic) {
         this.addFilterTopic = addFilterTopic;
 
-        this.fieldComboBox = new JComboBox<Field>(Field.values());
-        this.functionComboBox = new JComboBox<Function>(Function.values());
+        this.fieldComboBox = new JComboBox<>(Field.values());
+        this.functionComboBox = new JComboBox<>(Function.values());
         this.argumentTextField = new JTextField();
         this.addButton = new JButton("+");
 

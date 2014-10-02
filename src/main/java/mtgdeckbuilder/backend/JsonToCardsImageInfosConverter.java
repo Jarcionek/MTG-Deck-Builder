@@ -14,8 +14,8 @@ public class JsonToCardsImageInfosConverter {
     public Set<CardImageInfo> convert(String json) {
         JSONArray jsonArray = new JSONArray(json);
 
-        Map<String, Integer> nameToIdMap = new HashMap<String, Integer>();
-        Map<String, String> nameToReleaseMap = new HashMap<String, String>();
+        Map<String, Integer> nameToIdMap = new HashMap<>();
+        Map<String, String> nameToReleaseMap = new HashMap<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -27,7 +27,7 @@ public class JsonToCardsImageInfosConverter {
             }
         }
 
-        Set<CardImageInfo> set = new HashSet<CardImageInfo>();
+        Set<CardImageInfo> set = new HashSet<>();
 
         for (Map.Entry<String, Integer> entry : nameToIdMap.entrySet()) {
             set.add(new CardImageInfo(entry.getValue(), entry.getKey()));

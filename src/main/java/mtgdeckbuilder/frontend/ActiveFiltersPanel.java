@@ -28,7 +28,7 @@ public class ActiveFiltersPanel extends JPanel implements AddFilterTopic.Subscri
         this.innerPanel = new JPanel(new GridLayout(0, 1));
         this.setLayout(new GridLayout(1, 1));
         this.add(new JScrollPane(innerPanel));
-        this.filters = new ArrayList<Filter>();
+        this.filters = new ArrayList<>();
     }
 
     @Override

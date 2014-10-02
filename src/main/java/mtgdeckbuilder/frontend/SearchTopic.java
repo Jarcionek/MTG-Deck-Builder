@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SearchTopic {
 
-    private final Set<Subscriber> subscribers = new HashSet<Subscriber>();
+    private final Set<Subscriber> subscribers = new HashSet<>();
 
     public void addSubscriber(Subscriber subscriber) {
         subscribers.add(subscriber);
