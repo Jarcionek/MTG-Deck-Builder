@@ -7,6 +7,7 @@ import mtgdeckbuilder.backend.ImageDownloader;
 import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
 import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.topics.AddFilterTopic;
+import mtgdeckbuilder.topics.ProgressTopic;
 import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JFrame;
@@ -33,7 +34,7 @@ public class MainFrame extends JFrame {
                 new FilterToUrlConverter(),
                 new UrlDownloader(),
                 new JsonToCardsImageInfosConverter(),
-                new CardImageDownloader(Config.cardsDirectory(), new ImageDownloader()),
+                new CardImageDownloader(Config.cardsDirectory(), new ImageDownloader(), new ProgressTopic()),
                 new SearchTopic()
         );
         this.cardsDisplayPanel = new CardsDisplayPanel(new CardImageLoader(Config.cardsDirectory()));

@@ -2,14 +2,17 @@ package mtgdeckbuilder.backend;
 
 import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Url;
+import mtgdeckbuilder.topics.ProgressTopic;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import java.io.File;
 import java.io.IOException;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,8 +34,9 @@ public class CardImageDownloaderTest {
     private static final File HIGH_RES_FILE_THREE = new File(HIGH_RES_IMAGES_DIRECTORY, IMAGE_NAME_THREE + ".jpg");
 
     private ImageDownloader imageDownloader = mock(ImageDownloader.class);
+    private ProgressTopic progressTopic = mock(ProgressTopic.class);
 
-    private CardImageDownloader cardImageDownloader = new CardImageDownloader(CARDS_DIRECTORY, imageDownloader);
+    private CardImageDownloader cardImageDownloader = new CardImageDownloader(CARDS_DIRECTORY, imageDownloader, progressTopic);
 
     @Before
     @After
@@ -80,6 +84,19 @@ public class CardImageDownloaderTest {
         verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/hi_res_card_images/1.jpg"), HIGH_RES_FILE_THREE);
         verify(imageDownloader, times(1)).download(new Url("http://api.mtgdb.info/content/hi_res_card_images/77777.jpg"), HIGH_RES_FILE_ONE);
         verifyNoMoreInteractions(imageDownloader);
+    }
+
+    @Test
+    public void notifiesSubscribers() {
+        cardImageDownloader.download(newHashSet(new CardImageInfo(1, "1"), new CardImageInfo(2, "2"), new CardImageInfo(3, "3")));
+
+        InOrder inOrder = inOrder(progressTopic);
+        inOrder.verify(progressTopic).notifyWorkStarted(3);
+        inOrder.verify(progressTopic).notifyWorkUpdate(1);
+        inOrder.verify(progressTopic).notifyWorkUpdate(2);
+        inOrder.verify(progressTopic).notifyWorkUpdate(3);
+        inOrder.verify(progressTopic).notifyWorkFinished();
+        inOrder.verifyNoMoreInteractions();
     }
 
 }

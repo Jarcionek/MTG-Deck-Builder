@@ -2,6 +2,7 @@ package mtgdeckbuilder.backend;
 
 import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Url;
+import mtgdeckbuilder.topics.ProgressTopic;
 
 import java.io.File;
 import java.util.Set;
@@ -16,32 +17,34 @@ public class CardImageDownloader {
 
     private final File cardsDirectory;
     private final ImageDownloader imageDownloader;
+    private final ProgressTopic progressTopic;
 
-    public CardImageDownloader(File cardsDirectory, ImageDownloader imageDownloader) {
+    public CardImageDownloader(File cardsDirectory, ImageDownloader imageDownloader, ProgressTopic progressTopic) {
         this.cardsDirectory = cardsDirectory;
         this.imageDownloader = imageDownloader;
+        this.progressTopic = progressTopic;
     }
 
     public void download(Set<CardImageInfo> cardImageInfos) {
-        System.out.println("======================================="); //TODO Jarek: remove these system.out.printlns
+        progressTopic.notifyWorkStarted(cardImageInfos.size());
+
         int count = 0;
         for (CardImageInfo cardImageInfo : cardImageInfos) {
-            System.out.println(++count + "\t" + cardImageInfo.getName() + "\t" + cardImageInfo.getId());
-        }
-        System.out.println("=======================================");
-        for (CardImageInfo cardImageInfo : cardImageInfos) {
+
             File lowResFile = new File(cardsDirectory, "low/" + cardImageInfo.getName() + ".jpg");
             if (!lowResFile.exists()) {
-                System.out.println("downloading low: " + cardImageInfo.getName());
                 imageDownloader.download(new Url(LOW_RES_URL + cardImageInfo.getId() + LOW_RES_EXT), lowResFile);
             }
+
             File highResFile = new File(cardsDirectory, "high/" + cardImageInfo.getName() + ".jpg");
             if (!highResFile.exists()) {
-                System.out.println("downloading high: " + cardImageInfo.getName());
                 imageDownloader.download(new Url(HIGH_RES_URL + cardImageInfo.getId() + HIGH_RES_EXT), highResFile);
             }
+
+            progressTopic.notifyWorkUpdate(++count);
         }
-        System.out.println("=======================================");
+
+        progressTopic.notifyWorkFinished();
     }
 
 }

@@ -17,6 +17,9 @@ public class ProgressTopic {
         }
     }
 
+    /**
+     * Should be called with consecutive numbers starting at 1 and ending at totalParts
+     */
     public void notifyWorkUpdate(int partDone) {
         for (Subscriber subscriber : subscribers) {
             subscriber.workUpdate(partDone);
