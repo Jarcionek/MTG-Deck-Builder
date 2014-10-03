@@ -6,6 +6,8 @@ import mtgdeckbuilder.backend.FilterToUrlConverter;
 import mtgdeckbuilder.backend.ImageDownloader;
 import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
 import mtgdeckbuilder.backend.UrlDownloader;
+import mtgdeckbuilder.topics.AddFilterTopic;
+import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

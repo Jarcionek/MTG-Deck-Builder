@@ -1,4 +1,4 @@
-package mtgdeckbuilder.frontend;
+package mtgdeckbuilder.topics;
 
 import mtgdeckbuilder.data.Field;
 import mtgdeckbuilder.data.Filter;

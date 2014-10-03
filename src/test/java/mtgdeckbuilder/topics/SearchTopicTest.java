@@ -1,4 +1,4 @@
-package mtgdeckbuilder.frontend;
+package mtgdeckbuilder.topics;
 
 import com.google.common.collect.Sets;
 import mtgdeckbuilder.data.CardImageInfo;

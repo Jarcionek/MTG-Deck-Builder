@@ -1,11 +1,11 @@
-package mtgdeckbuilder.frontend;
+package mtgdeckbuilder.topics;
 
-import mtgdeckbuilder.data.CardImageInfo;
+import mtgdeckbuilder.data.Filter;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class SearchTopic {
+public class AddFilterTopic {
 
     private final Set<Subscriber> subscribers = new HashSet<>();
 
@@ -13,14 +13,14 @@ public class SearchTopic {
         subscribers.add(subscriber);
     }
 
-    public void notifySearchFinished(Set<CardImageInfo> cardImageInfos) {
+    public void post(Filter filter) {
         for (Subscriber subscriber : subscribers) {
-            subscriber.searchFinished(cardImageInfos);
+            subscriber.filterAdded(filter);
         }
     }
 
     public static interface Subscriber {
-        void searchFinished(Set<CardImageInfo> cardImageInfos);
+        void filterAdded(Filter filter);
     }
 
 }

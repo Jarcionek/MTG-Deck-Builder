@@ -3,6 +3,7 @@ package mtgdeckbuilder.frontend;
 import mtgdeckbuilder.data.Field;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Function;
+import mtgdeckbuilder.topics.AddFilterTopic;
 import org.junit.Test;
 
 import javax.swing.JButton;

@@ -8,6 +8,7 @@ import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Url;
+import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
