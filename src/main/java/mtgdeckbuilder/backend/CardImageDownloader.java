@@ -25,6 +25,10 @@ public class CardImageDownloader {
         this.progressTopic = progressTopic;
     }
 
+    public ProgressTopic getProgressTopic() {
+        return progressTopic;
+    }
+
     public void download(Set<CardImageInfo> cardImageInfos) {
         progressTopic.notifyWorkStarted(cardImageInfos.size());
 
