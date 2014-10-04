@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class ProgressTopicTest {
 
@@ -47,6 +48,17 @@ public class ProgressTopicTest {
         verify(subscriberOne, times(1)).workFinished();
         verify(subscriberTwo, times(1)).workFinished();
         verifyNoMoreInteractions(subscriberOne, subscriberTwo);
+    }
+
+    @Test
+    public void removesSubscriber() {
+        ProgressTopic.Subscriber subscriber = mock(ProgressTopic.Subscriber.class);
+        topic.addSubscriber(subscriber);
+        topic.removeSubscriber(subscriber);
+
+        topic.notifyWorkStarted(0);
+
+        verifyZeroInteractions(subscriber);
     }
 
 }

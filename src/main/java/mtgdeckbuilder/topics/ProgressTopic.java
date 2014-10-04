@@ -11,6 +11,10 @@ public class ProgressTopic {
         subscribers.add(subscriber);
     }
 
+    public void removeSubscriber(Subscriber subscriber) {
+        subscribers.remove(subscriber);
+    }
+
     public void notifyWorkStarted(int totalParts) {
         for (Subscriber subscriber : subscribers) {
             subscriber.workStarted(totalParts);

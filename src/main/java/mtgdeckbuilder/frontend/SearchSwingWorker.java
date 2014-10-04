@@ -24,6 +24,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
     private final JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter;
     private final CardImageDownloader cardImageDownloader;
     private final SearchTopic searchTopic;
+    private final ProgressTopic progressTopic;
 
     private final JButton searchButton;
     private final JLabel searchLabel;
@@ -46,6 +47,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
         this.jsonToCardsImageInfosConverter = jsonToCardsImageInfosConverter;
         this.cardImageDownloader = cardImageDownloader;
         this.searchTopic = searchTopic;
+        this.progressTopic = progressTopic;
 
         progressTopic.addSubscriber(this);
 
@@ -70,7 +72,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
 
     @Override
     protected void done() {
-        //TODO Jarek: unsubscribe from the topic
+        progressTopic.removeSubscriber(this);
         searchButton.setEnabled(true);
         try {
             get();
