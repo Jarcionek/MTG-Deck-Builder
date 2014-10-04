@@ -15,10 +15,15 @@ import java.util.Set;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.containsComponentRecursively;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.displayAndWait;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CardsDisplayPanelTest {
@@ -57,6 +62,17 @@ public class CardsDisplayPanelTest {
         assertThat("cardLabel0", findComponentRecursively(cardsDisplayPanel, "cardLabel0", JLabel.class).getText(), is(equalTo("Label 1")));
         assertThat("cardLabel1", findComponentRecursively(cardsDisplayPanel, "cardLabel1", JLabel.class).getText(), is(equalTo("Label 2")));
         assertThat("cardLabel2", findComponentRecursively(cardsDisplayPanel, "cardLabel2", JLabel.class).getText(), is(equalTo("Label 3")));
+    }
+
+    @Test
+    public void revalidatesAndRepaintsAfterLoading() {
+        cardsDisplayPanel = spy(cardsDisplayPanel);
+        when(cardImageLoader.loadLowRes(argThat(any(String.class)))).thenReturn(new JLabel());
+
+        cardsDisplayPanel.load(list("1", "2", "3"));
+
+        verify(cardsDisplayPanel, times(1)).revalidate();
+        verify(cardsDisplayPanel, times(1)).repaint();
     }
 
 

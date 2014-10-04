@@ -10,13 +10,13 @@ import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Url;
 import mtgdeckbuilder.topics.ProgressTopic;
+import mtgdeckbuilder.topics.SearchTopic;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
@@ -42,6 +42,7 @@ public class SearchSwingWorkerTest {
     private UrlDownloader urlDownloader = mock(UrlDownloader.class);
     private JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter = mock(JsonToCardsImageInfosConverter.class);
     private CardImageDownloader cardImageDownloader = mock(CardImageDownloader.class);
+    private SearchTopic searchTopic = mock(SearchTopic.class);
 
     private JButton searchButton = mock(JButton.class);
     private JLabel searchLabel = mock(JLabel.class);
@@ -51,7 +52,7 @@ public class SearchSwingWorkerTest {
     @Before
     public void createSearchSwingWorkerUsingSearchSwingWorkerFactory() {
         when(cardImageDownloader.getProgressTopic()).thenReturn(new ProgressTopic());
-        searchSwingWorker = new SearchSwingWorkerFactory(filterToUrlConverter, urlDownloader, jsonToCardsImageInfosConverter, cardImageDownloader)
+        searchSwingWorker = new SearchSwingWorkerFactory(filterToUrlConverter, urlDownloader, jsonToCardsImageInfosConverter, cardImageDownloader, searchTopic)
                 .newSearchSwingWorker(searchButton, searchLabel, FILTERS);
     }
 
@@ -71,20 +72,15 @@ public class SearchSwingWorkerTest {
         searchSwingWorker.workStarted(4);
         searchSwingWorker.process(newArrayList(0));
 
-        verify(searchLabel).setText("0/4");
+        verify(searchLabel).setText("downloading - 0/4");
 
         searchSwingWorker.workUpdate(1);
         searchSwingWorker.workUpdate(2);
         searchSwingWorker.workUpdate(3);
         searchSwingWorker.process(newArrayList(1, 2, 3));
 
-        verify(searchLabel).setText("3/4");
+        verify(searchLabel).setText("downloading - 3/4");
         verifyNoMoreInteractions(searchLabel);
-    }
-
-    @Test
-    public void asasf() throws ExecutionException, InterruptedException {
-        searchSwingWorker.execute();
     }
 
 }

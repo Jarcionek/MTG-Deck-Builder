@@ -19,8 +19,8 @@ public class CardImageLoader {
     public JLabel loadLowRes(String cardName) {
         File file = new File(cardsDirectory, "low/" + cardName + ".jpg");
         try {
-            return new JLabel(new ImageIcon(ImageIO.read(file)));
-        } catch (IOException e) {
+            return new JLabel(new ImageIcon(ImageIO.read(file))); //TODO Jarek: crashes with null pointer if file size is 0 bytes
+        } catch (Exception e) {
             throw new RuntimeException(file.getAbsolutePath(), e);
         }
     }

@@ -1,51 +1,33 @@
 package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.TestCode;
-import mtgdeckbuilder.backend.CardImageDownloader;
-import mtgdeckbuilder.backend.FilterToUrlConverter;
-import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
-import mtgdeckbuilder.backend.UrlDownloader;
-import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Filter;
-import mtgdeckbuilder.data.Url;
-import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Set;
 
 public class SearchButtonPanel extends JPanel {
 
     private final ActiveFiltersPanel activeFiltersPanel;
-    private final FilterToUrlConverter filterToUrlConverter;
-    private final UrlDownloader urlDownloader;
-    private final JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter;
-    private final CardImageDownloader cardImageDownloader;
-    private final SearchTopic searchTopic;
+    private final SearchSwingWorkerFactory searchSwingWorkerFactory;
 
     private final JButton searchButton;
+    private final JLabel searchLabel;
 
-    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel,
-                             FilterToUrlConverter filterToUrlConverter,
-                             UrlDownloader urlDownloader,
-                             JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter,
-                             CardImageDownloader cardImageDownloader,
-                             SearchTopic searchTopic) {
+    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel, SearchSwingWorkerFactory searchSwingWorkerFactory) {
         this.activeFiltersPanel = activeFiltersPanel;
-        this.filterToUrlConverter = filterToUrlConverter;
-        this.urlDownloader = urlDownloader;
-        this.jsonToCardsImageInfosConverter = jsonToCardsImageInfosConverter;
-        this.cardImageDownloader = cardImageDownloader;
-        this.searchTopic = searchTopic;
+        this.searchSwingWorkerFactory = searchSwingWorkerFactory;
 
         this.searchButton = new JButton("Search");
+        this.searchLabel = new JLabel("");
         setNames();
         configureComponents();
-
-        this.add(searchButton);
+        createLayout();
     }
 
     private void configureComponents() {
@@ -54,14 +36,12 @@ public class SearchButtonPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 List<Filter> filters = activeFiltersPanel.getFilters();
                 if (filters.isEmpty()) {
+                    searchLabel.setText("you need at least one filter to search");
                     return;
                 }
-                //TODO Jarek: this shouldn't be done on event dispatch thread but on background swing worker firing regular progress updates
-                String url = filterToUrlConverter.convert(filters);
-                String json = urlDownloader.download(new Url(url));
-                Set<CardImageInfo> cardImageInfos = jsonToCardsImageInfosConverter.convert(json);
-                cardImageDownloader.download(cardImageInfos);
-                searchTopic.notifySearchFinished(cardImageInfos);
+                searchButton.setEnabled(false);
+                searchLabel.setText("fetching data");
+                searchSwingWorkerFactory.newSearchSwingWorker(searchButton, searchLabel, filters).execute();
             }
         });
     }
@@ -69,6 +49,14 @@ public class SearchButtonPanel extends JPanel {
     @TestCode
     private void setNames() {
         this.searchButton.setName("searchButton");
+        this.searchLabel.setName("searchLabel");
+    }
+
+    private void createLayout() {
+        this.setLayout(new BorderLayout());
+        this.add(searchButton, BorderLayout.EAST);
+        this.add(searchLabel, BorderLayout.CENTER);
+        searchLabel.setHorizontalAlignment(JLabel.CENTER);
     }
 
 }

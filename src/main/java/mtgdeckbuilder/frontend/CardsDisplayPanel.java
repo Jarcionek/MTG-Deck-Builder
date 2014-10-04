@@ -25,12 +25,14 @@ public class CardsDisplayPanel extends JPanel {
     }
 
     public void load(Iterable<CardImageInfo> cardImageInfos) {
+        innerPanel.removeAll();
         for (CardImageInfo cardImageInfo : cardImageInfos) {
             JLabel label = cardImageLoader.loadLowRes(cardImageInfo.getName());
             setLabelName(label);
             innerPanel.add(label);
         }
-
+        revalidate();
+        repaint();
     }
 
     @TestCode

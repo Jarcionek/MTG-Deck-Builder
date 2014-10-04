@@ -8,6 +8,7 @@ import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Url;
 import mtgdeckbuilder.topics.ProgressTopic;
+import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,17 +23,20 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
     private final UrlDownloader urlDownloader;
     private final JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter;
     private final CardImageDownloader cardImageDownloader;
+    private final SearchTopic searchTopic;
 
     private final JButton searchButton;
     private final JLabel searchLabel;
     private final List<Filter> filters;
 
     private int totalParts;
+    private Set<CardImageInfo> cardImageInfos;
 
     public SearchSwingWorker(FilterToUrlConverter filterToUrlConverter,
                              UrlDownloader urlDownloader,
                              JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter,
                              CardImageDownloader cardImageDownloader,
+                             SearchTopic searchTopic,
                              ProgressTopic progressTopic,
                              JButton searchButton,
                              JLabel searchLabel,
@@ -41,6 +45,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
         this.urlDownloader = urlDownloader;
         this.jsonToCardsImageInfosConverter = jsonToCardsImageInfosConverter;
         this.cardImageDownloader = cardImageDownloader;
+        this.searchTopic = searchTopic;
 
         progressTopic.addSubscriber(this);
 
@@ -53,14 +58,14 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
     protected Object doInBackground() {
         String url = filterToUrlConverter.convert(filters);
         String json = urlDownloader.download(new Url(url));
-        Set<CardImageInfo> cardImageInfos = jsonToCardsImageInfosConverter.convert(json);
+        cardImageInfos = jsonToCardsImageInfosConverter.convert(json);
         cardImageDownloader.download(cardImageInfos);
         return null;
     }
 
     @Override
     protected void process(List<Integer> chunks) {
-        searchLabel.setText(chunks.get(chunks.size() - 1) + "/" + totalParts);
+        searchLabel.setText("downloading - " + chunks.get(chunks.size() - 1) + "/" + totalParts);
     }
 
     @Override
@@ -75,6 +80,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
             return;
         }
         searchLabel.setText("");
+        searchTopic.notifySearchFinished(cardImageInfos);
     }
 
     @Override

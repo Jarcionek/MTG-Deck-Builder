@@ -12,7 +12,7 @@ public class SearchSwingWorkerFactoryTest {
 
     private ProgressTopic progressTopic = mock(ProgressTopic.class);
 
-    private SearchSwingWorkerFactory searchSwingWorkerFactory = new SearchSwingWorkerFactory(null, null, null, new CardImageDownloader(null, null, progressTopic));
+    private SearchSwingWorkerFactory searchSwingWorkerFactory = new SearchSwingWorkerFactory(null, null, null, new CardImageDownloader(null, null, progressTopic), null);
 
     @Test
     public void createsSearchSwingWorkerWithProgressTopicOfCardImageDownloader() {

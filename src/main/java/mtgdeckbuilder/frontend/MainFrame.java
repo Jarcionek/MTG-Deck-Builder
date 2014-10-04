@@ -20,6 +20,10 @@ import java.awt.Dimension;
 public class MainFrame extends JFrame {
 
     private final AddFilterTopic addFilterTopic = new AddFilterTopic();
+    private final ProgressTopic progressTopic = new ProgressTopic();
+    private final SearchTopic searchTopic = new SearchTopic();
+
+    private final SearchSwingWorkerFactory searchSwingWorkerFactory;
 
     private final NewFilterPanel newFilterPanel;
     private final ActiveFiltersPanel activeFiltersPanel;
@@ -27,17 +31,22 @@ public class MainFrame extends JFrame {
     private final CardsDisplayPanel cardsDisplayPanel;
 
     public MainFrame() {
-        this.newFilterPanel = new NewFilterPanel(addFilterTopic);
-        this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
-        this.searchButtonPanel = new SearchButtonPanel(
-                activeFiltersPanel,
+        this.searchSwingWorkerFactory = new SearchSwingWorkerFactory(
                 new FilterToUrlConverter(),
                 new UrlDownloader(),
                 new JsonToCardsImageInfosConverter(),
-                new CardImageDownloader(Config.cardsDirectory(), new ImageDownloader(), new ProgressTopic()),
-                new SearchTopic()
+                new CardImageDownloader(
+                        Config.cardsDirectory(),
+                        new ImageDownloader(),
+                        progressTopic
+                ),
+                searchTopic
         );
-        this.cardsDisplayPanel = new CardsDisplayPanel(new CardImageLoader(Config.cardsDirectory()));
+
+        this.newFilterPanel = new NewFilterPanel(addFilterTopic);
+        this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
+        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, searchSwingWorkerFactory);
+        this.cardsDisplayPanel = new SearchedCardsDisplayPanel(new CardImageLoader(Config.cardsDirectory()), searchTopic);
 
         createLayout();
         configureFrame();

@@ -20,7 +20,7 @@ public class JsonToCardsImageInfosConverter {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             int id = jsonObject.getInt("id");
-            String name = jsonObject.getString("name");
+            String name = jsonObject.getString("name"); //TODO Jarek: releasedAt is sometimes missing
             if (!nameToIdMap.containsKey(name)  || jsonObject.getString("releasedAt").compareTo(nameToReleaseMap.get(name)) > 0) {
                 nameToIdMap.put(name, id);
                 nameToReleaseMap.put(name, jsonObject.getString("releasedAt"));

@@ -5,6 +5,7 @@ import mtgdeckbuilder.backend.FilterToUrlConverter;
 import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
 import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.data.Filter;
+import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,15 +17,18 @@ public class SearchSwingWorkerFactory {
     private final UrlDownloader urlDownloader;
     private final JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter;
     private final CardImageDownloader cardImageDownloader;
+    private final SearchTopic searchTopic;
 
     public SearchSwingWorkerFactory(FilterToUrlConverter filterToUrlConverter,
                                     UrlDownloader urlDownloader,
                                     JsonToCardsImageInfosConverter jsonToCardsImageInfosConverter,
-                                    CardImageDownloader cardImageDownloader) {
+                                    CardImageDownloader cardImageDownloader,
+                                    SearchTopic searchTopic) {
         this.filterToUrlConverter = filterToUrlConverter;
         this.urlDownloader = urlDownloader;
         this.jsonToCardsImageInfosConverter = jsonToCardsImageInfosConverter;
         this.cardImageDownloader = cardImageDownloader;
+        this.searchTopic = searchTopic;
     }
 
     public SearchSwingWorker newSearchSwingWorker(JButton searchButton, JLabel searchLabel, List<Filter> filters) {
@@ -33,6 +37,7 @@ public class SearchSwingWorkerFactory {
                 urlDownloader,
                 jsonToCardsImageInfosConverter,
                 cardImageDownloader,
+                searchTopic,
                 cardImageDownloader.getProgressTopic(),
                 searchButton,
                 searchLabel,
