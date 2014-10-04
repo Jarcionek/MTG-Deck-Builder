@@ -58,7 +58,7 @@ public class MainFrame extends JFrame {
         topPanel.add(activeFiltersPanel, BorderLayout.CENTER);
         topPanel.add(searchButtonPanel, BorderLayout.SOUTH);
 
-        activeFiltersPanel.setPreferredSize(new Dimension(0, 75));
+        activeFiltersPanel.setPreferredSize(new Dimension(0, 125));
 
         this.setLayout(new BorderLayout());
         this.add(topPanel, BorderLayout.NORTH);
