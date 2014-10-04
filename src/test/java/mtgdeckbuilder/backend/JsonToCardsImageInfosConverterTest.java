@@ -108,6 +108,26 @@ public class JsonToCardsImageInfosConverterTest {
         assertThat(cardImageInfos, is(sameBeanAs(set(new CardImageInfo(2386, "Plains")))));
     }
 
+    @Test
+    public void ignoresEntriesWithNoReleasedAtWhenThereAreTwoCardsWithTheSameName() {
+        Set<CardImageInfo> cardImageInfos = jsonToCardsImageInfosConverter.convert(
+                "[" +
+                        "{" +
+                                "\"id\":295," +
+                                "\"name\":\"Plains\"," +
+                                "\"releasedAt\":\"1993-08-05\"" +
+                        "}," +
+                        "{" +
+                                "\"id\":1397," +
+                                "\"name\":\"Plains\"," +
+                                "\"releasedAt\":null" +
+                        "}" +
+                "]"
+        );
+
+        assertThat(cardImageInfos, is(sameBeanAs(set(new CardImageInfo(295, "Plains")))));
+    }
+
 
     private static Set<CardImageInfo> set(CardImageInfo... cardImageInfos) {
         return newHashSet(cardImageInfos);
