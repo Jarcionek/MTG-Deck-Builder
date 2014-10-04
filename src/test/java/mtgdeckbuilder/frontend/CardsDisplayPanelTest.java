@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.swing.JLabel;
+import java.awt.Dimension;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -81,6 +82,8 @@ public class CardsDisplayPanelTest {
     public void manualFrontEndTestWithFiveDifferentCards() throws URISyntaxException {
         cardsDisplayPanel = new CardsDisplayPanel(new CardImageLoader(new File(this.getClass().getResource("cards").toURI())));
 
+        cardsDisplayPanel.setSize(new Dimension(800, 300));
+        cardsDisplayPanel.setPreferredSize(new Dimension(800, 300));
         cardsDisplayPanel.load(set("AEther Adept", "Ajani's Pridemate", "Black Cat", "Cone of Flame", "Elvish Mystic"));
 
         displayAndWait(cardsDisplayPanel);
@@ -96,6 +99,8 @@ public class CardsDisplayPanelTest {
             list.addAll(list("AEther Adept", "Ajani's Pridemate", "Black Cat", "Cone of Flame", "Elvish Mystic"));
         }
 
+        cardsDisplayPanel.setSize(new Dimension(800, 300));
+        cardsDisplayPanel.setPreferredSize(new Dimension(800, 300));
         cardsDisplayPanel.load(list);
 
         displayAndWait(cardsDisplayPanel);

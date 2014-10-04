@@ -43,7 +43,7 @@ public class NewFilterPanel extends JPanel {
     private void setComponentsNames() {
         this.fieldComboBox.setName("fieldComboBox");
         this.functionComboBox.setName("functionComboBox");
-        this.argumentTextField.setName("argumentTextField");
+        this.argumentTextField.setName("argumentTextField"); //TODO Jarek: pressing enter should work as clicking "+" button
         this.addButton.setName("addButton");
     }
 

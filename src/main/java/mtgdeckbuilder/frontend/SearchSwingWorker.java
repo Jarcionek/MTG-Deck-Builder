@@ -81,7 +81,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
             Logger.getAnonymousLogger().severe(e.toString());
             return;
         }
-        searchLabel.setText("");
+        searchLabel.setText("showing " + totalParts + " cards");
         searchTopic.notifySearchFinished(cardImageInfos);
     }
 
