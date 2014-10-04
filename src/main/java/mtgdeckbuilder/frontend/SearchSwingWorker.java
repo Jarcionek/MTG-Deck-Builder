@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class SearchSwingWorker extends SwingWorker<Object, Integer> implements ProgressTopic.Subscriber {
 
@@ -78,8 +77,7 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
             get();
         } catch (Exception e) {
             searchLabel.setText(searchLabel.getText() + " - error");
-            Logger.getAnonymousLogger().severe(e.toString());
-            return;
+            throw new RuntimeException(e);
         }
         searchLabel.setText("showing " + totalParts + " cards");
         searchTopic.notifySearchFinished(cardImageInfos);

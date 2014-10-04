@@ -23,14 +23,21 @@ public class ImageDownloader {
             byte[] buffer = new byte[2048];
             int length;
 
+            boolean downloadedAnything = false;
             while ((length = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, length);
+                downloadedAnything = true;
             }
 
             inputStream.close();
             outputStream.close();
+
+            if (!downloadedAnything) {
+                //TODO Jarek: any more robust solution...?
+                throw new RuntimeException("did not download any image! url=" + url + ", file=" + file.getAbsolutePath());
+            }
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            throw new RuntimeException("url=" + url + ", file=" + file, exception);
         }
     }
 
