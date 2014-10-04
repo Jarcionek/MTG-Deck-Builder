@@ -2,6 +2,7 @@ package mtgdeckbuilder.util;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -76,6 +77,20 @@ public class FrontEndTestingUtils {
                             button,
                             ActionEvent.ACTION_PERFORMED,
                             button.getText(),
+                            System.currentTimeMillis(),
+                            InputEvent.BUTTON1_MASK
+                    )
+            );
+        }
+    }
+
+    public static void pressEnterIn(JTextField textField) {
+        for (ActionListener actionListener : textField.getActionListeners()) {
+            actionListener.actionPerformed(
+                    new ActionEvent(
+                            textField,
+                            ActionEvent.ACTION_PERFORMED,
+                            textField.getText(),
                             System.currentTimeMillis(),
                             InputEvent.BUTTON1_MASK
                     )

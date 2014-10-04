@@ -43,14 +43,15 @@ public class NewFilterPanel extends JPanel {
     private void setComponentsNames() {
         this.fieldComboBox.setName("fieldComboBox");
         this.functionComboBox.setName("functionComboBox");
-        this.argumentTextField.setName("argumentTextField"); //TODO Jarek: pressing enter should work as clicking "+" button
+        this.argumentTextField.setName("argumentTextField");
         this.addButton.setName("addButton");
     }
 
     private void configureComponents() {
         this.fieldComboBox.setMaximumRowCount(Field.values().length);
         this.functionComboBox.setMaximumRowCount(Function.values().length);
-        this.addButton.addActionListener(new ActionListener() {
+
+        ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Field field = (Field) fieldComboBox.getSelectedItem();
@@ -58,7 +59,9 @@ public class NewFilterPanel extends JPanel {
                 String argument = argumentTextField.getText();
                 addFilterTopic.post(new Filter(field, function, argument));
             }
-        });
+        };
+        this.argumentTextField.addActionListener(actionListener);
+        this.addButton.addActionListener(actionListener);
     }
 
     private void createLayout() {
