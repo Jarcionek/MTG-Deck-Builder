@@ -103,8 +103,26 @@ public class CardsDisplayPanel extends JPanel {
             }
         }
 
-        revalidate();
-        repaint();
+        super.revalidate();
+        super.repaint();
+    }
+
+    @Override
+    public void revalidate() {
+        if (labels == null) {
+            super.revalidate();
+        } else {
+            display();
+        }
+    }
+
+    @Override
+    public void repaint() {
+        if (labels == null) {
+            super.repaint();
+        } else {
+            display();
+        }
     }
 
     @TestCode
