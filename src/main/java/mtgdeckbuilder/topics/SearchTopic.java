@@ -1,7 +1,5 @@
 package mtgdeckbuilder.topics;
 
-import mtgdeckbuilder.data.CardImageInfo;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,14 +11,14 @@ public class SearchTopic {
         subscribers.add(subscriber);
     }
 
-    public void notifySearchFinished(Set<CardImageInfo> cardImageInfos) {
+    public void notifySearchFinished(Iterable<String> cardNames) {
         for (Subscriber subscriber : subscribers) {
-            subscriber.searchFinished(cardImageInfos);
+            subscriber.searchFinished(cardNames);
         }
     }
 
     public static interface Subscriber {
-        void searchFinished(Set<CardImageInfo> cardImageInfos);
+        void searchFinished(Iterable<String> cardNames);
     }
 
 }

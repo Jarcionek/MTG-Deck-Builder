@@ -13,6 +13,7 @@ import mtgdeckbuilder.topics.SearchTopic;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -80,7 +81,12 @@ public class SearchSwingWorker extends SwingWorker<Object, Integer> implements P
             throw new RuntimeException(e);
         }
         searchLabel.setText("showing " + totalParts + " cards");
-        searchTopic.notifySearchFinished(cardImageInfos);
+
+        List<String> cardNames = new ArrayList<>(cardImageInfos.size());
+        for (CardImageInfo cardImageInfo : cardImageInfos) {
+            cardNames.add(cardImageInfo.getName());
+        }
+        searchTopic.notifySearchFinished(cardNames);
     }
 
     @Override

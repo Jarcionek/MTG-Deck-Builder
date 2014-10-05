@@ -1,9 +1,6 @@
 package mtgdeckbuilder.frontend;
 
-import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.topics.SearchTopic;
-
-import java.util.Set;
 
 public class SearchedCardsDisplayPanel extends CardsDisplayPanel implements SearchTopic.Subscriber {
 
@@ -13,8 +10,8 @@ public class SearchedCardsDisplayPanel extends CardsDisplayPanel implements Sear
     }
 
     @Override
-    public void searchFinished(Set<CardImageInfo> cardImageInfos) {
-        load(cardImageInfos);
+    public void searchFinished(Iterable<String> cardNames) {
+        load(cardNames);
     }
 
 }

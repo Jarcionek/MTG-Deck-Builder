@@ -1,7 +1,6 @@
 package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.TestCode;
-import mtgdeckbuilder.data.CardImageInfo;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -59,12 +58,12 @@ public class CardsDisplayPanel extends JPanel {
         });
     }
 
-    public void load(Iterable<CardImageInfo> cardImageInfos) {
+    public void load(Iterable<String> cardNames) {
         labels = new ArrayList<>();
         selectedCard = 0;
 
-        for (CardImageInfo cardImageInfo : cardImageInfos) {
-            JLabel label = cardImageLoader.loadLowRes(cardImageInfo.getName());
+        for (String cardName : cardNames) {
+            JLabel label = cardImageLoader.loadLowRes(cardName);
             setLabelName(label);
             labels.add(label);
         }

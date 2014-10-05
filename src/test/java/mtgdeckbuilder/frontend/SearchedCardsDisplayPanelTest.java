@@ -1,12 +1,9 @@
 package mtgdeckbuilder.frontend;
 
-import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.topics.SearchTopic;
 import org.junit.Test;
 
-import java.util.Set;
-
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -15,7 +12,7 @@ import static org.mockito.Mockito.verify;
 
 public class SearchedCardsDisplayPanelTest {
 
-    private static final Set<CardImageInfo> CARD_IMAGE_INFOS = newHashSet(new CardImageInfo(3, "asasf"));
+    private static final Iterable<String> CARD_NAMES = newArrayList("one-card", "another-card");
 
     private CardImageLoader cardImageLoader = mock(CardImageLoader.class);
     private SearchTopic searchTopic = mock(SearchTopic.class);
@@ -30,11 +27,11 @@ public class SearchedCardsDisplayPanelTest {
     @Test
     public void loadsRequestedCardsWhenSearchFinished() {
         searchedCardsDisplayPanel = spy(searchedCardsDisplayPanel);
-        doNothing().when(searchedCardsDisplayPanel).load(CARD_IMAGE_INFOS);
+        doNothing().when(searchedCardsDisplayPanel).load(CARD_NAMES);
 
-        searchedCardsDisplayPanel.searchFinished(CARD_IMAGE_INFOS);
+        searchedCardsDisplayPanel.searchFinished(CARD_NAMES);
 
-        verify(searchedCardsDisplayPanel, times(1)).load(CARD_IMAGE_INFOS);
+        verify(searchedCardsDisplayPanel, times(1)).load(CARD_NAMES);
     }
 
 }
