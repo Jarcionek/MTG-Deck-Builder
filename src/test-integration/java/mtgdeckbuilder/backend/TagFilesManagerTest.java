@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.CombinableMatcher.both;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
@@ -67,6 +69,13 @@ public class TagFilesManagerTest {
         List<String> loadedCards = tagFilesManager.load(tagOne);
 
         assertEquals(cardsTwo, loadedCards);
+    }
+
+    @Test
+    public void returnsEmptyListWhenLoadingNonExistingFile() {
+        List<String> loadedCards = tagFilesManager.load(tagTwo);
+
+        assertThat(loadedCards, is(empty()));
     }
 
 

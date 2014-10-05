@@ -38,6 +38,10 @@ public class TagFilesManager {
     public List<String> load(String tagName) {
         File tagFile = new File(tagsDirectory, tagName);
 
+        if (!tagFile.exists()) {
+            return new ArrayList<>();
+        }
+
         try {
             List<String> cards = new ArrayList<>();
 
