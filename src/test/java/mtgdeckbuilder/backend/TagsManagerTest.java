@@ -67,6 +67,16 @@ public class TagsManagerTest {
         assertEquals(expectedCards, actualCards);
     }
 
+    @Test
+    public void retrievesAllAvailableTags() {
+        List<String> expectedTags = newArrayList(TAG_ONE, TAG_TWO);
+        when(tagFilesManager.loadAvailableTags()).thenReturn(expectedTags);
+
+        List<String> actualTags = tagsManager.getAvailableTags();
+
+        assertEquals(expectedTags, actualTags);
+    }
+
 
     private static CustomisableMatcher<List<String>> sameIterableAs(String... cards) {
         return sameBeanAs(Arrays.asList(cards));

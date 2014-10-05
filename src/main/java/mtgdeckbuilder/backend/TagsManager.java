@@ -34,4 +34,8 @@ public class TagsManager {
         return tagFilesManager.load(tagName);
     }
 
+    public List<String> getAvailableTags() {
+        return tagFilesManager.loadAvailableTags();
+    }
+
 }

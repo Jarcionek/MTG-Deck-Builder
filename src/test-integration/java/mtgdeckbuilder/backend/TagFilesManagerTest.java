@@ -6,12 +6,14 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.CombinableMatcher.both;
 import static org.hamcrest.core.StringContains.containsString;
@@ -24,8 +26,10 @@ public class TagFilesManagerTest {
 
     private final String tagOne = "tagNameOne";
     private final String tagTwo = "tagNameTwo";
-    private final File tagFileOne = new File(TAGS_DIRECTORY, tagOne);
-    private final File tagFileTwo = new File(TAGS_DIRECTORY, tagTwo);
+    private final String tagThree = "tagNameThree";
+    private final File tagFileOne = new File(TAGS_DIRECTORY, tagOne + ".txt");
+    private final File tagFileTwo = new File(TAGS_DIRECTORY, tagTwo + ".txt");
+    private final File tagFileThree = new File(TAGS_DIRECTORY, tagThree + ".txt");
     private final String cardNameOne = "cardNameOne";
     private final String cardNameTwo = "cardNameTwo";
     private final String cardNameThree = "cardNameThree";
@@ -39,6 +43,7 @@ public class TagFilesManagerTest {
     public void deleteFiles() {
         tagFileOne.delete();
         tagFileTwo.delete();
+        tagFileThree.delete();
         TAGS_DIRECTORY.delete();
     }
 
@@ -76,6 +81,18 @@ public class TagFilesManagerTest {
         List<String> loadedCards = tagFilesManager.load(tagTwo);
 
         assertThat(loadedCards, is(empty()));
+    }
+
+    @Test
+    public void retrievesAvailableTags() throws IOException {
+        TAGS_DIRECTORY.mkdirs();
+        tagFileOne.createNewFile();
+        tagFileTwo.createNewFile();
+        tagFileThree.createNewFile();
+
+        List<String> availableTags = tagFilesManager.loadAvailableTags();
+
+        assertThat(availableTags, containsInAnyOrder(tagOne, tagTwo, tagThree));
     }
 
 

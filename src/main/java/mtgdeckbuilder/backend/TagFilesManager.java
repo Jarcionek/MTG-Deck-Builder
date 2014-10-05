@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class TagFilesManager {
 
+    private static final String EXTENSION = ".txt";
+
     private final File tagsDirectory;
 
     public TagFilesManager(File tagsDirectory) {
@@ -18,7 +20,7 @@ public class TagFilesManager {
     }
 
     public void save(String tagName, Iterable<String> cardNames) {
-        File tagFile = new File(tagsDirectory, tagName);
+        File tagFile = new File(tagsDirectory, tagName + EXTENSION);
         if (!tagFile.getParentFile().exists()) {
             tagFile.getParentFile().mkdirs();
         }
@@ -36,7 +38,7 @@ public class TagFilesManager {
     }
 
     public List<String> load(String tagName) {
-        File tagFile = new File(tagsDirectory, tagName);
+        File tagFile = new File(tagsDirectory, tagName + EXTENSION);
 
         if (!tagFile.exists()) {
             return new ArrayList<>();
@@ -55,6 +57,16 @@ public class TagFilesManager {
         } catch (FileNotFoundException exception) {
             throw new RuntimeException("Could not load tag file " + tagFile.getAbsolutePath(), exception);
         }
+    }
+
+    public List<String> loadAvailableTags() {
+        List<String> tags = new ArrayList<>();
+
+        for (String fileName : tagsDirectory.list()) {
+            tags.add(fileName.substring(0, fileName.length() - EXTENSION.length()));
+        }
+
+        return tags;
     }
 
 }
