@@ -62,6 +62,10 @@ public class TagFilesManager {
     public List<String> loadAvailableTags() {
         List<String> tags = new ArrayList<>();
 
+        if (!tagsDirectory.exists()) {
+            return tags;
+        }
+
         for (String fileName : tagsDirectory.list()) {
             tags.add(fileName.substring(0, fileName.length() - EXTENSION.length()));
         }

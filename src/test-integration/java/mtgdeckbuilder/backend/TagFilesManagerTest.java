@@ -95,6 +95,13 @@ public class TagFilesManagerTest {
         assertThat(availableTags, containsInAnyOrder(tagOne, tagTwo, tagThree));
     }
 
+    @Test
+    public void returnsEmptyListAsAvailableTagsWhenTagsDirectoryDoesNotExist() {
+        List<String> availableTags = tagFilesManager.loadAvailableTags();
+
+        assertThat(availableTags, is(empty()));
+    }
+
 
     private static String fileAsString(File file) {
         try {
