@@ -32,6 +32,7 @@ public class CardsDisplayPanel extends JPanel {
     private final CardImageLoader cardImageLoader;
 
     private List<JLabel> labels;
+    private List<String> cardNames;
     private int selectedCard;
 
     @TestCode private int labelCount = 0;
@@ -59,16 +60,22 @@ public class CardsDisplayPanel extends JPanel {
     }
 
     public void load(Iterable<String> cardNames) {
-        labels = new ArrayList<>();
-        selectedCard = 0;
+        this.labels = new ArrayList<>();
+        this.cardNames = new ArrayList<>();
+        this.selectedCard = 0;
 
         for (String cardName : cardNames) {
             JLabel label = cardImageLoader.loadLowRes(cardName);
             setLabelName(label);
-            labels.add(label);
+            this.labels.add(label);
+            this.cardNames.add(cardName);
         }
 
         display();
+    }
+
+    public String getSelectedCard() {
+        return cardNames.get(selectedCard);
     }
 
     private void display() {
