@@ -35,6 +35,10 @@ public class FrontEndTestingUtils {
     }
 
     public static <T extends Component> T findComponentRecursively(Container container, String componentName, Class<T> requestedClass) {
+        if (container == null) {
+            throw new IllegalArgumentException("Container was null");
+        }
+
         T componentFound = fcr(container, componentName, requestedClass);
         if (componentFound == null) {
             throw new NoSuchComponentException(container, componentName);
