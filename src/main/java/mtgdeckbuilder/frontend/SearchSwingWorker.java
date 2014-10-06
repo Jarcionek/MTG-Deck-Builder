@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+//TODO Jarek: doesn't stop when closing the MainFrame
 public class SearchSwingWorker extends SwingWorker<Object, Integer> implements ProgressTopic.Subscriber {
 
     private final FilterToUrlConverter filterToUrlConverter;

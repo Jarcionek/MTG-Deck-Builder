@@ -5,6 +5,8 @@ import mtgdeckbuilder.backend.CardImageDownloader;
 import mtgdeckbuilder.backend.FilterToUrlConverter;
 import mtgdeckbuilder.backend.ImageDownloader;
 import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
+import mtgdeckbuilder.backend.TagFilesManager;
+import mtgdeckbuilder.backend.TagsManager;
 import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.topics.AddFilterTopic;
 import mtgdeckbuilder.topics.ProgressTopic;
@@ -12,6 +14,7 @@ import mtgdeckbuilder.topics.SearchTopic;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
@@ -25,15 +28,17 @@ public class MainFrame extends JFrame {
     private final ProgressTopic progressTopic = new ProgressTopic();
     private final SearchTopic searchTopic = new SearchTopic();
 
-    private final SearchSwingWorkerFactory searchSwingWorkerFactory;
-
     private final NewFilterPanel newFilterPanel;
     private final ActiveFiltersPanel activeFiltersPanel;
     private final SearchButtonPanel searchButtonPanel;
     private final CardsDisplayPanel cardsDisplayPanel;
+    private final TagViewer tagViewer;
 
     public MainFrame() {
-        this.searchSwingWorkerFactory = new SearchSwingWorkerFactory(
+        super("MTG Deck Builder");
+
+        // backend
+        SearchSwingWorkerFactory searchSwingWorkerFactory = new SearchSwingWorkerFactory(
                 new FilterToUrlConverter(),
                 new UrlDownloader(),
                 new JsonToCardsImageInfosConverter(),
@@ -44,11 +49,15 @@ public class MainFrame extends JFrame {
                 ),
                 searchTopic
         );
+        CardImageLoader cardImageLoader = new CardImageLoader(Config.cardsDirectory());
+        TagsManager tagsManager = new TagsManager(new TagFilesManager(Config.tagsDirectory()));
 
+        // frontend
         this.newFilterPanel = new NewFilterPanel(addFilterTopic);
         this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
         this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, searchSwingWorkerFactory);
-        this.cardsDisplayPanel = new SearchedCardsDisplayPanel(new CardImageLoader(Config.cardsDirectory()), searchTopic);
+        this.cardsDisplayPanel = new SearchedCardsDisplayPanel(cardImageLoader, searchTopic);
+        this.tagViewer = new TagViewer(tagsManager);
 
         createLayout();
         configureFrame();
@@ -69,10 +78,17 @@ public class MainFrame extends JFrame {
         topPanel.add(searchButtonPanel, BorderLayout.SOUTH);
 
         activeFiltersPanel.setPreferredSize(new Dimension(0, 125));
+        activeFiltersPanel.setMinimumSize(new Dimension(0, 50));
 
-        this.setLayout(new BorderLayout());
-        this.add(topPanel, BorderLayout.NORTH);
-        this.add(cardsDisplayPanel, BorderLayout.CENTER);
+        JSplitPane topAndBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        topAndBottomSplitPane.setTopComponent(topPanel);
+        topAndBottomSplitPane.setBottomComponent(cardsDisplayPanel);
+
+        JSplitPane leftAndRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        leftAndRightSplitPane.setLeftComponent(tagViewer);
+        leftAndRightSplitPane.setRightComponent(topAndBottomSplitPane);
+
+        this.setContentPane(leftAndRightSplitPane);
     }
 
     private void configureFrame() {

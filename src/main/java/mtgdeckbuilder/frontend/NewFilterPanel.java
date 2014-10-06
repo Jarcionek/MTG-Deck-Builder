@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 
 //TODO Jarek: card name: Ajani's Pridemate - apostrophe is illegal character
 //TODO Jarek: card name: Æther Adept - Æ is illegal character (use AE instead)
+//TODO Jarek: card name: Error (Trial/Error) - cannot be used as file name due to slash
 public class NewFilterPanel extends JPanel {
 
     private final AddFilterTopic addFilterTopic;
