@@ -1,5 +1,6 @@
 package mtgdeckbuilder.backend;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TagsManager {
@@ -36,6 +37,10 @@ public class TagsManager {
 
     public List<String> getAvailableTags() {
         return tagFilesManager.loadAvailableTags();
+    }
+
+    public void createEmptyTag(String tagName) {
+        tagFilesManager.save(tagName, Collections.<String>emptyList());
     }
 
 }

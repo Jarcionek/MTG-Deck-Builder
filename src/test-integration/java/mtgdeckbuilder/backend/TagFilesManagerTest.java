@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -68,6 +69,13 @@ public class TagFilesManagerTest {
     }
 
     @Test
+    public void savingEmptyListToNonExistingTagCreatesFile() {
+        tagFilesManager.save(tagOne, Collections.<String>emptyList());
+
+        assertEquals("tagFileOne exists", true, tagFileOne.exists());
+    }
+
+    @Test
     public void loadsFromSavedFile() {
         tagFilesManager.save(tagOne, cardsTwo);
 
@@ -96,7 +104,7 @@ public class TagFilesManagerTest {
     }
 
     @Test
-    public void returnsEmptyListAsAvailableTagsWhenTagsDirectoryDoesNotExist() {
+    public void returnsEmptyListOfAvailableTagsWhenTagsDirectoryDoesNotExist() {
         List<String> availableTags = tagFilesManager.loadAvailableTags();
 
         assertThat(availableTags, is(empty()));
