@@ -20,7 +20,6 @@ public class ProgressTopicTest {
     public void addSubscribers() {
         topic.addSubscriber(subscriberOne);
         topic.addSubscriber(subscriberTwo);
-
     }
 
     @Test
