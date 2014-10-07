@@ -2,6 +2,7 @@ package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.backend.TagsManager;
+import mtgdeckbuilder.topics.TagTopic;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -11,15 +12,16 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-public class TagViewer extends JPanel {
+public class TagViewer extends JPanel implements TagTopic.Subscriber {
 
     private final TagsManager tagsManager;
 
     private final DefaultListModel<String> listModel;
     private final JList<String> list;
 
-    public TagViewer(TagsManager tagsManager) {
+    public TagViewer(TagsManager tagsManager, TagTopic tagTopic) {
         this.tagsManager = tagsManager;
+        tagTopic.addSubscriber(this);
 
         listModel = new DefaultListModel<>();
         refresh();
@@ -55,6 +57,17 @@ public class TagViewer extends JPanel {
     @TestCode
     private void setNames() {
         list.setName("jlist");
+    }
+
+    @Override
+    public void cardTagged(String cardName, String tagName) {}
+
+    @Override
+    public void cardUntagged(String cardName, String tagName) {}
+
+    @Override
+    public void tagCreated(String tagName) {
+        listModel.add(0, tagName);
     }
 
 }

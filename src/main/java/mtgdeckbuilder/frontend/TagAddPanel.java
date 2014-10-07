@@ -7,6 +7,7 @@ import mtgdeckbuilder.topics.TagTopic;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,6 +36,7 @@ public class TagAddPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!textField.getText().isEmpty()) {
+                    //TODO Jarek: I don't think this should be happening if the tag already exists
                     tagsManager.createEmptyTag(textField.getText());
                     tagTopic.notifyTagCreated(textField.getText());
                     textField.setText("");
@@ -46,8 +48,9 @@ public class TagAddPanel extends JPanel {
     }
 
     private void createLayout() {
-        this.add(textField);
-        this.add(createButton);
+        this.setLayout(new BorderLayout());
+        this.add(textField, BorderLayout.CENTER);
+        this.add(createButton, BorderLayout.EAST);
     }
 
     @TestCode
