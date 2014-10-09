@@ -94,6 +94,8 @@ public class CardTaggingPanelTest {
         assertEquals("newly added tag should be selected", TAG_4, tagsComboBox.getSelectedItem());
     }
 
+    //TODO Jarek: crashes when no card is selected (e.g. search with no results)
+    //TODO Jarek: make tag/untag buttons disabled depending whether selected card is in selected tag or not
 
     private static List<String> itemsIn(JComboBox<?> comboBox) {
         List<String> list = new ArrayList<>();

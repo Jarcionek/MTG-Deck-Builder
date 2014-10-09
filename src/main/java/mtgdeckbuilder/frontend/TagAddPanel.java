@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,7 +25,7 @@ public class TagAddPanel extends JPanel {
         this.tagTopic = tagTopic;
 
         textField = new JTextField();
-        createButton = new JButton("create");
+        createButton = new JButton("create new tag");
 
         setNames();
         addListeners();
@@ -48,7 +49,7 @@ public class TagAddPanel extends JPanel {
     }
 
     private void createLayout() {
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridLayout(2, 1));
         this.add(textField, BorderLayout.CENTER);
         this.add(createButton, BorderLayout.EAST);
     }

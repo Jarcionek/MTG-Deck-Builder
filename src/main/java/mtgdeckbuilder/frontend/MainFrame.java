@@ -36,6 +36,7 @@ public class MainFrame extends JFrame {
     private final CardsDisplayPanel cardsDisplayPanel;
     private final TagViewer tagViewer;
     private final TagAddPanel tagAddPanel;
+    private final CardTaggingPanel cardTaggingPanel;
 
     public MainFrame() {
         super("MTG Deck Builder");
@@ -62,6 +63,7 @@ public class MainFrame extends JFrame {
         this.cardsDisplayPanel = new SearchedCardsDisplayPanel(cardImageLoader, searchTopic);
         this.tagViewer = new TagViewer(tagsManager, tagTopic);
         this.tagAddPanel = new TagAddPanel(tagsManager, tagTopic);
+        this.cardTaggingPanel = new CardTaggingPanel(cardsDisplayPanel, tagsManager, tagTopic);
 
         createLayout();
         configureFrame();
@@ -76,23 +78,28 @@ public class MainFrame extends JFrame {
     }
 
     private void createLayout() {
+        activeFiltersPanel.setPreferredSize(new Dimension(0, 125));
+        activeFiltersPanel.setMinimumSize(new Dimension(0, 50));
+
         JPanel filteringPanel = new JPanel(new BorderLayout());
         filteringPanel.add(newFilterPanel, BorderLayout.NORTH);
         filteringPanel.add(activeFiltersPanel, BorderLayout.CENTER);
         filteringPanel.add(searchButtonPanel, BorderLayout.SOUTH);
-        activeFiltersPanel.setPreferredSize(new Dimension(0, 125));
-        activeFiltersPanel.setMinimumSize(new Dimension(0, 50));
 
-        JPanel searchedCardsDisplayPanel = new JPanel(new BorderLayout());
-        searchedCardsDisplayPanel.add(cardsDisplayPanel, BorderLayout.CENTER);
-        searchedCardsDisplayPanel.add(tagAddPanel, BorderLayout.SOUTH);
+        JPanel searchedCardsDisplayContainer = new JPanel(new BorderLayout());
+        searchedCardsDisplayContainer.add(cardsDisplayPanel, BorderLayout.CENTER);
+        searchedCardsDisplayContainer.add(cardTaggingPanel, BorderLayout.SOUTH);
 
         JSplitPane topAndBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         topAndBottomSplitPane.setTopComponent(filteringPanel);
-        topAndBottomSplitPane.setBottomComponent(searchedCardsDisplayPanel);
+        topAndBottomSplitPane.setBottomComponent(searchedCardsDisplayContainer);
+
+        JPanel leftPartOfSplitPane = new JPanel(new BorderLayout());
+        leftPartOfSplitPane.add(tagViewer, BorderLayout.CENTER);
+        leftPartOfSplitPane.add(tagAddPanel, BorderLayout.NORTH);
 
         JSplitPane leftAndRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        leftAndRightSplitPane.setLeftComponent(tagViewer);
+        leftAndRightSplitPane.setLeftComponent(leftPartOfSplitPane);
         leftAndRightSplitPane.setRightComponent(topAndBottomSplitPane);
 
         this.setContentPane(leftAndRightSplitPane);

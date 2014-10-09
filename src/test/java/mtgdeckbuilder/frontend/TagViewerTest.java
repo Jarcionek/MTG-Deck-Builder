@@ -32,7 +32,7 @@ public class TagViewerTest {
     }
 
     @Test
-    public void displaysTagsImmediatelyAfterCreation() {
+    public void displaysAvailableTagsImmediatelyAfterCreation() {
         List<String> availableTags = newArrayList("one", "two", "three");
         when(tagsManager.getAvailableTags()).thenReturn(availableTags);
 
@@ -50,7 +50,7 @@ public class TagViewerTest {
         when(tagsManager.getAvailableTags()).thenReturn(tagsOne).thenReturn(tagsTwo);
         tagViewer = new TagViewer(tagsManager, tagTopic);
 
-        tagViewer.refresh();
+        tagViewer.refresh(); //TODO Jarek: should this method be private and this test go away?
 
         JList<?> jlist = findComponentRecursively(tagViewer, "jlist", JList.class);
         jlist.setSelectedIndices(new int[] {0, 1, 2, 3, 4, 5, 6});
@@ -70,5 +70,7 @@ public class TagViewerTest {
         jlist.setSelectedIndices(new int[] {0, 1, 2, 3, 4, 5, 6});
         assertEquals(expectedTags, jlist.getSelectedValuesList());
     }
+
+    //TODO Jarek: selection listener and load cards in card viewer on selection change - make the list single-selection only
 
 }
