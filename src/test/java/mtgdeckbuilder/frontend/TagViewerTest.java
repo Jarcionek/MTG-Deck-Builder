@@ -17,60 +17,93 @@ import static org.mockito.Mockito.when;
 public class TagViewerTest {
 
     private TagsManager tagsManager = mock(TagsManager.class);
+    private CardsDisplayPanel cardsDisplayPanel = mock(CardsDisplayPanel.class);
     private TagTopic tagTopic = mock(TagTopic.class);
 
     private TagViewer tagViewer;
 
     @Test
     public void subscribesToTopic() {
+        // given
         List<String> availableTags = newArrayList("one", "two", "three");
         when(tagsManager.getAvailableTags()).thenReturn(availableTags);
 
-        tagViewer = new TagViewer(tagsManager, tagTopic);
+        // when
+        tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
 
+        // then
         verify(tagTopic).addSubscriber(tagViewer);
     }
 
     @Test
     public void displaysAvailableTagsImmediatelyAfterCreation() {
+        // given
         List<String> availableTags = newArrayList("one", "two", "three");
         when(tagsManager.getAvailableTags()).thenReturn(availableTags);
 
-        tagViewer = new TagViewer(tagsManager, tagTopic);
+        // when
+        tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
 
+        // then
         JList<?> jlist = findComponentRecursively(tagViewer, "jlist", JList.class);
-        jlist.setSelectedIndices(new int[] {0, 1, 2, 3, 4, 5, 6});
-        assertEquals(availableTags, jlist.getSelectedValuesList());
-    }
-
-    @Test
-    public void reloadsTagsOnRefresh() {
-        List<String> tagsOne = newArrayList("one", "two", "three");
-        List<String> tagsTwo = newArrayList("ein", "zwei", "drei");
-        when(tagsManager.getAvailableTags()).thenReturn(tagsOne).thenReturn(tagsTwo);
-        tagViewer = new TagViewer(tagsManager, tagTopic);
-
-        tagViewer.refresh(); //TODO Jarek: should this method be private and this test go away?
-
-        JList<?> jlist = findComponentRecursively(tagViewer, "jlist", JList.class);
-        jlist.setSelectedIndices(new int[] {0, 1, 2, 3, 4, 5, 6});
-        assertEquals(tagsTwo, jlist.getSelectedValuesList());
+        assertEquals(availableTags, valuesIn(jlist));
     }
 
     @Test
     public void addsNewTagToTheTopOfTheListWhenTopicNotifiesAboutCreatingNewTag() {
+        // given
         List<String> tags = newArrayList("1", "2", "3");
         when(tagsManager.getAvailableTags()).thenReturn(tags);
-        tagViewer = new TagViewer(tagsManager, tagTopic);
+        tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
 
+        // when
         tagViewer.tagCreated("4");
 
-        List<String> expectedTags = newArrayList("4", "1", "2", "3");
+        // then
         JList<?> jlist = findComponentRecursively(tagViewer, "jlist", JList.class);
-        jlist.setSelectedIndices(new int[] {0, 1, 2, 3, 4, 5, 6});
-        assertEquals(expectedTags, jlist.getSelectedValuesList());
+        List<String> expectedTags = newArrayList("4", "1", "2", "3");
+        assertEquals(expectedTags, valuesIn(jlist));
     }
 
-    //TODO Jarek: selection listener and load cards in card viewer on selection change - make the list single-selection only
+    @Test
+    public void notifiesTopicWhenSelectingTag() {
+        // given
+        List<String> tags = newArrayList("1", "tag", "3");
+        when(tagsManager.getAvailableTags()).thenReturn(tags);
+        tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
+        JList<?> jlist = findComponentRecursively(tagViewer, "jlist", JList.class);
+
+        // when
+        jlist.setSelectedIndex(1);
+
+        // then
+        verify(tagTopic).notifyTagSelected("tag");
+    }
+
+    @Test
+    public void loadsCardsFromTagWhenSelectingTag() {
+        // given
+        List<String> tags = newArrayList("tag-1", "tag-2", "tag-3", "tag-4");
+        List<String> cards = newArrayList("card-1", "card-2", "card-3");
+        when(tagsManager.getAvailableTags()).thenReturn(tags);
+        when(tagsManager.getCards("tag-4")).thenReturn(cards);
+        tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
+        JList<?> jlist = findComponentRecursively(tagViewer, "jlist", JList.class);
+
+        // when
+        jlist.setSelectedIndex(3);
+
+        // then
+        verify(cardsDisplayPanel).load(cards);
+    }
+
+
+    private static List<?> valuesIn(JList<?> jlist) {
+        List<Object> list = newArrayList();
+        for (int i = 0; i < jlist.getModel().getSize(); i++) {
+            list.add(jlist.getModel().getElementAt(i));
+        }
+        return list;
+    }
 
 }
