@@ -21,7 +21,7 @@ public class ImageDownloaderTest {
     private static final File FILE_IN_NON_EXISTING_DIRECTORY = new File(ImageDownloaderTest.class.getSimpleName() + "-dir",
                                                                         ImageDownloaderTest.class.getSimpleName() + "-file.jpg");
 
-    private static final BufferedImage EXPECTED_IMAGE = loadResourceImage("ImageDownloaderTest-expectedfile.jpg");
+    private static final BufferedImage EXPECTED_IMAGE = loadResourceImage("ImageDownloaderTest-expectedFile.jpg");
 
     private ImageDownloader imageDownloader = new ImageDownloader();
 

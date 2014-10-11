@@ -3,7 +3,6 @@ package mtgdeckbuilder.backend;
 import mtgdeckbuilder.data.Url;
 import org.junit.Test;
 
-import java.io.File;
 import java.net.MalformedURLException;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertThat;
  */
 public class UrlDownloaderTest {
 
-    public static final String NEW_LINE = System.getProperty("line.separator");
+    private static final String NEW_LINE = System.getProperty("line.separator");
     private UrlDownloader urlDownloader = new UrlDownloader();
 
     @Test
