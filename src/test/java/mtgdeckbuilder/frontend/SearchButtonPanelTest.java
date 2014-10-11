@@ -9,15 +9,15 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 import static mtgdeckbuilder.data.Field.color;
 import static mtgdeckbuilder.data.Field.manacost;
 import static mtgdeckbuilder.data.Function.eq;
 import static mtgdeckbuilder.data.Function.lt;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
