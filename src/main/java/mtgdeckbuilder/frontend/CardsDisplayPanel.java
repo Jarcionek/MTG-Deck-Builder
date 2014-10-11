@@ -97,7 +97,9 @@ public class CardsDisplayPanel extends JPanel {
             label.setBounds(diff, 0, labelWidth, labelHeight);
         }
 
-        add(labels.get(selectedCard));
+        if (!labels.isEmpty()) {
+            add(labels.get(selectedCard));
+        }
         for (int i = selectedCard + 1; i <= selectedCard + MARGIN; i++) {
             if (i >= 0 && i < labels.size()) {
                 add(labels.get(i));

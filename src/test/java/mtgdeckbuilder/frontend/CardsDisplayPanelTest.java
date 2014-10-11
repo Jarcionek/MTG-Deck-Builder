@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -35,6 +36,11 @@ public class CardsDisplayPanelTest {
         assertThat("cardLabel0", findComponentRecursively(cardsDisplayPanel, "cardLabel0", JLabel.class).getText(), is(equalTo("Label 1")));
         assertThat("cardLabel1", findComponentRecursively(cardsDisplayPanel, "cardLabel1", JLabel.class).getText(), is(equalTo("Label 2")));
         assertThat("cardLabel2", findComponentRecursively(cardsDisplayPanel, "cardLabel2", JLabel.class).getText(), is(equalTo("Label 3")));
+    }
+
+    @Test
+    public void doesNotCrashWhenLoadingEmptyList() {
+        cardsDisplayPanel.load(Collections.<String>emptyList());
     }
 
 
