@@ -29,10 +29,17 @@ public class TagTopic {
         }
     }
 
+    public void notifyTagSelected(String tagName) {
+        for (Subscriber subscriber : subscribers) {
+            subscriber.tagSelected(tagName);
+        }
+    }
+
     public static interface Subscriber {
         void cardTagged(String cardName, String tagName);
         void cardUntagged(String cardName, String tagName);
         void tagCreated(String tagName);
+        void tagSelected(String tagName);
     }
 
 }

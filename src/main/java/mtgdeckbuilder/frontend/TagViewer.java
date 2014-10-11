@@ -70,4 +70,7 @@ public class TagViewer extends JPanel implements TagTopic.Subscriber {
         listModel.add(0, tagName);
     }
 
+    @Override
+    public void tagSelected(String tagName) {}
+
 }

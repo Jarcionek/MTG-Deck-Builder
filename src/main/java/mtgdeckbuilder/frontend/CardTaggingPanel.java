@@ -71,6 +71,9 @@ public class CardTaggingPanel extends JPanel implements TagTopic.Subscriber {
         jComboBox.setSelectedItem(tagName);
     }
 
+    @Override
+    public void tagSelected(String tagName) {}
+
     @TestCode
     private void setNames() {
         jComboBox.setName("tagsComboBox");

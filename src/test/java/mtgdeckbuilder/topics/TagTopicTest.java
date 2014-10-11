@@ -48,4 +48,13 @@ public class TagTopicTest {
         verifyNoMoreInteractions(subscriberOne, subscriberTwo);
     }
 
+    @Test
+    public void notifiesSubscribersAboutTagSelected() {
+        topic.notifyTagSelected("newTag");
+
+        verify(subscriberOne, times(1)).tagSelected("newTag");
+        verify(subscriberTwo, times(1)).tagSelected("newTag");
+        verifyNoMoreInteractions(subscriberOne, subscriberTwo);
+    }
+
 }
