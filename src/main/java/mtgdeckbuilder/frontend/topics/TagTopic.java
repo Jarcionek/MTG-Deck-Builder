@@ -1,4 +1,4 @@
-package mtgdeckbuilder.topics;
+package mtgdeckbuilder.frontend.topics;
 
 import java.util.HashSet;
 import java.util.Set;

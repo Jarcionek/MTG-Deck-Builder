@@ -2,7 +2,7 @@ package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.data.Filter;
-import mtgdeckbuilder.topics.AddFilterTopic;
+import mtgdeckbuilder.frontend.topics.AddFilterTopic;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;

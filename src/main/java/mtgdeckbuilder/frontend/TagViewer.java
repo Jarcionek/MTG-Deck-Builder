@@ -2,7 +2,7 @@ package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.backend.TagsManager;
-import mtgdeckbuilder.topics.TagTopic;
+import mtgdeckbuilder.frontend.topics.TagTopic;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;

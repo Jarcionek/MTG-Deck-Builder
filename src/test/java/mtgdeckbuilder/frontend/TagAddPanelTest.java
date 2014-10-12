@@ -1,7 +1,7 @@
 package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.backend.TagsManager;
-import mtgdeckbuilder.topics.TagTopic;
+import mtgdeckbuilder.frontend.topics.TagTopic;
 import org.junit.Test;
 
 import javax.swing.JButton;

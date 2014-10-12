@@ -4,7 +4,7 @@ import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.data.Field;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Function;
-import mtgdeckbuilder.topics.AddFilterTopic;
+import mtgdeckbuilder.frontend.topics.AddFilterTopic;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;

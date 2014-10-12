@@ -9,8 +9,8 @@ import mtgdeckbuilder.backend.TagFilesManager;
 import mtgdeckbuilder.backend.TagsManager;
 import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
-import mtgdeckbuilder.topics.AddFilterTopic;
-import mtgdeckbuilder.topics.TagTopic;
+import mtgdeckbuilder.frontend.topics.AddFilterTopic;
+import mtgdeckbuilder.frontend.topics.TagTopic;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
