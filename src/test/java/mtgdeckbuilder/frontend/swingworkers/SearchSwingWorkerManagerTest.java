@@ -37,6 +37,7 @@ import static org.apache.log4j.Logger.getRootLogger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
@@ -216,6 +217,26 @@ public class SearchSwingWorkerManagerTest {
     @Test
     public void doesNotCrashWhenCancellingIfThreadNeverRun() {
         searchSwingWorkerManager.cancel();
+    }
+
+    @Test
+    public void doesNotNotifySearchProgressHarvestAfterCancelling() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                searchSwingWorkerManager.cancel();
+                CardImageDownloadProgressHarvest cardImageDownloadProgressHarvest = (CardImageDownloadProgressHarvest) invocation.getArguments()[1];
+                cardImageDownloadProgressHarvest.downloaded(1);
+                cardImageDownloadProgressHarvest.downloaded(2);
+                return null;
+            }
+        }).when(cardImageDownloader).download(anySet(), any(CardImageDownloadProgressHarvest.class));
+        notifyLockWhenLogging(Level.INFO);
+
+        searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
+
+        waitUntilLockNotified();
+        verify(searchProgressHarvest, never()).partDone(anyInt());
     }
 
 

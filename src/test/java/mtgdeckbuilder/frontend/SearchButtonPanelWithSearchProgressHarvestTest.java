@@ -22,7 +22,6 @@ import static mtgdeckbuilder.data.Function.gt;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -84,15 +83,6 @@ public class SearchButtonPanelWithSearchProgressHarvestTest {
     }
 
     @Test
-    public void enablesButtonWhenFinished() {
-        searchButton.setEnabled(false);
-
-        searchProgressHarvest.finished();
-
-        assertTrue("searchButton should be enabled but was not", searchButton.isEnabled());
-    }
-
-    @Test
     public void loadsCardsWhenFinished() {
         ArrayList<String> foundCards = newArrayList("one", "two");
         when(searchSwingWorkerManager.getFoundCards()).thenReturn(foundCards);
@@ -108,15 +98,6 @@ public class SearchButtonPanelWithSearchProgressHarvestTest {
         searchProgressHarvest.error();
 
         assertEquals("unexpected label's text", "error", searchLabel.getText());
-    }
-
-    @Test
-    public void enablesButtonWhenError() {
-        searchButton.setEnabled(false);
-
-        searchProgressHarvest.error();
-
-        assertTrue("searchButton should be enabled but was not", searchButton.isEnabled());
     }
 
 }

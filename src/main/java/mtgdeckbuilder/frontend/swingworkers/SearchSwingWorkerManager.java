@@ -91,6 +91,9 @@ public class SearchSwingWorkerManager {
 
         @Override
         protected void process(List<ProgressUpdate> chunks) {
+            if (isCancelled()) {
+                return;
+            }
             if (chunks.get(0) instanceof StartedUpdate) {
                 searchProgressHarvest.started(chunks.get(0).getNumber());
             }

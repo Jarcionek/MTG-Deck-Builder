@@ -55,7 +55,6 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
                     searchLabel.setText("you need at least one filter to search");
                     return;
                 }
-                searchButton.setEnabled(false);
                 searchLabel.setText("fetching data");
                 searchSwingWorkerManager.searchAndDownloadCardsInBackground(filters, new StatusUpdater());
             }
@@ -88,7 +87,6 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
     public void tagSelected(String tagName) {
         searchSwingWorkerManager.cancel();
         searchLabel.setText("showing " + tagName);
-        searchButton.setEnabled(true);
     }
 
     private class StatusUpdater implements SearchProgressHarvest {
@@ -109,14 +107,12 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
         @Override
         public void finished() {
             searchLabel.setText("showing " + numberOfParts + " cards");
-            searchButton.setEnabled(true);
             cardsDisplayPanel.load(searchSwingWorkerManager.getFoundCards());
         }
 
         @Override
         public void error() {
             searchLabel.setText("error");
-            searchButton.setEnabled(true);
         }
 
     }
