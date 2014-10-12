@@ -39,15 +39,15 @@ public class SearchSwingWorkerManager {
     }
 
     public void searchAndDownloadCardsInBackground(List<Filter> filters, SearchProgressHarvest progressHarvest) {
-        if (swingWorker != null) {
-            swingWorker.cancel(true);
-        }
+        cancel();
         swingWorker = new SearchSwingWorker(filters, progressHarvest);
         swingWorker.execute();
     }
 
-    public void cancel() {
-        swingWorker.cancel(true);
+    public final void cancel() {
+        if (swingWorker != null) {
+            swingWorker.cancel(true);
+        }
     }
 
     public Iterable<String> getFoundCards() {

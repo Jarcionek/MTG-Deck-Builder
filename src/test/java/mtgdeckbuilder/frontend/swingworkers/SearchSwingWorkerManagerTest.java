@@ -213,6 +213,11 @@ public class SearchSwingWorkerManagerTest {
         waitUntilLockNotified(); // wait until info log about cancelled thread
     }
 
+    @Test
+    public void doesNotCrashWhenCancellingIfThreadNeverRun() {
+        searchSwingWorkerManager.cancel();
+    }
+
 
     private class SearchProgressHarvestStub implements SearchProgressHarvest {
 
