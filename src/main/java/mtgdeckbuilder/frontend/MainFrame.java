@@ -19,6 +19,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 //TODO Jarek: untested!
 @SuppressWarnings("FieldCanBeLocal")
@@ -39,7 +41,7 @@ public class MainFrame extends JFrame {
         super("MTG Deck Builder");
 
         // backend
-        SearchSwingWorkerManager searchSwingWorkerManager = new SearchSwingWorkerManager(
+        final SearchSwingWorkerManager searchSwingWorkerManager = new SearchSwingWorkerManager(
                 new FilterToUrlConverter(),
                 new UrlDownloader(),
                 new JsonToCardsImageInfosConverter(),
@@ -68,6 +70,12 @@ public class MainFrame extends JFrame {
             public void componentResized(ComponentEvent e) {
                 revalidate();
                 repaint();
+            }
+        });
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                searchSwingWorkerManager.cancel();
             }
         });
     }

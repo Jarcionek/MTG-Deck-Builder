@@ -41,6 +41,7 @@ import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -70,7 +71,6 @@ public class SearchSwingWorkerManagerTest {
     private static final String URL = "blah.com";
     private static final String JSON = "this is cards data in json format";
     private static final ImmutableSet<CardImageInfo> CARD_IMAGE_INFOS = ImmutableSet.of(new CardImageInfo(1, "name1"), new CardImageInfo(2, "name2"));
-
 
     @Rule public final Timeout timeout = new Timeout(1000);
 
@@ -197,6 +197,20 @@ public class SearchSwingWorkerManagerTest {
         verify(searchProgressHarvestStub, never()).finished();
         verify(searchProgressHarvestStub, never()).error();
         searchProgressHarvestStub.verifyAllCallsWereOnEventDispatchThread();
+    }
+
+    @Test
+    public void interruptsAlreadyRunningThreadWhenStartingNewThread() {
+        doNotifyLockAndGoToSleep().when(cardImageDownloader).download(anySet(), any(CardImageDownloadProgressHarvest.class));
+
+        searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
+        waitUntilLockNotified(); // wait until thread starts and goes to sleep
+
+        doNothing().when(cardImageDownloader).download(anySet(), any(CardImageDownloadProgressHarvest.class));
+        notifyLockWhenLogging(Level.INFO);
+
+        searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
+        waitUntilLockNotified(); // wait until info log about cancelled thread
     }
 
 

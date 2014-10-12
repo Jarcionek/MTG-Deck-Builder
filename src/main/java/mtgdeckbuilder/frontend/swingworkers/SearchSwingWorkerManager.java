@@ -39,7 +39,9 @@ public class SearchSwingWorkerManager {
     }
 
     public void searchAndDownloadCardsInBackground(List<Filter> filters, SearchProgressHarvest progressHarvest) {
-        //TODO Jarek: should cancel already running worker if any; what about notifications? wait until worker is really cancelled using get() and swallowing exception?
+        if (swingWorker != null) {
+            swingWorker.cancel(true);
+        }
         swingWorker = new SearchSwingWorker(filters, progressHarvest);
         swingWorker.execute();
     }
