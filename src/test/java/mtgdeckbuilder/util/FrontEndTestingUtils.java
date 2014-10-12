@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.CountDownLatch;
 
 public class FrontEndTestingUtils {
 
@@ -110,19 +111,19 @@ public class FrontEndTestingUtils {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        final Thread t = Thread.currentThread();
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                t.interrupt();
+                countDownLatch.countDown();
             }
         });
 
 
         try {
-            Thread.sleep(60 * 60 * 1000); //TODO Jarek: fix that blocking hack
-        } catch (InterruptedException expected) {}
+            countDownLatch.await();
+        } catch (InterruptedException ignored) {}
     }
 
 }
