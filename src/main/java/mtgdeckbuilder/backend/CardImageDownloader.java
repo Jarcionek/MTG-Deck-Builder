@@ -2,7 +2,6 @@ package mtgdeckbuilder.backend;
 
 import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Url;
-import mtgdeckbuilder.topics.ProgressTopic;
 
 import java.io.File;
 import java.util.Set;
@@ -17,21 +16,13 @@ public class CardImageDownloader {
 
     private final File cardsDirectory;
     private final ImageDownloader imageDownloader;
-    private final ProgressTopic progressTopic;
 
-    public CardImageDownloader(File cardsDirectory, ImageDownloader imageDownloader, ProgressTopic progressTopic) {
+    public CardImageDownloader(File cardsDirectory, ImageDownloader imageDownloader) {
         this.cardsDirectory = cardsDirectory;
         this.imageDownloader = imageDownloader;
-        this.progressTopic = progressTopic;
     }
 
-    public ProgressTopic getProgressTopic() {
-        return progressTopic;
-    }
-
-    public void download(Set<CardImageInfo> cardImageInfos) {
-        progressTopic.notifyWorkStarted(cardImageInfos.size());
-
+    public void download(Set<CardImageInfo> cardImageInfos, CardImageDownloadProgressHarvest progressHarvest) {
         int count = 0;
         for (CardImageInfo cardImageInfo : cardImageInfos) {
 
@@ -45,10 +36,8 @@ public class CardImageDownloader {
                 imageDownloader.download(new Url(HIGH_RES_URL + cardImageInfo.getId() + HIGH_RES_EXT), highResFile);
             }
 
-            progressTopic.notifyWorkUpdate(++count);
+            progressHarvest.downloaded(++count);
         }
-
-        progressTopic.notifyWorkFinished();
     }
 
 }

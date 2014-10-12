@@ -2,6 +2,8 @@ package mtgdeckbuilder.frontend;
 
 import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.data.Filter;
+import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
+import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,14 +16,16 @@ import java.util.List;
 public class SearchButtonPanel extends JPanel {
 
     private final ActiveFiltersPanel activeFiltersPanel;
-    private final SearchSwingWorkerFactory searchSwingWorkerFactory;
+    private final CardsDisplayPanel cardsDisplayPanel;
+    private final SearchSwingWorkerManager searchSwingWorkerManager;
 
     private final JButton searchButton;
     private final JLabel searchLabel;
 
-    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel, SearchSwingWorkerFactory searchSwingWorkerFactory) {
+    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel, CardsDisplayPanel cardsDisplayPanel, SearchSwingWorkerManager searchSwingWorkerManager) {
         this.activeFiltersPanel = activeFiltersPanel;
-        this.searchSwingWorkerFactory = searchSwingWorkerFactory;
+        this.cardsDisplayPanel = cardsDisplayPanel;
+        this.searchSwingWorkerManager = searchSwingWorkerManager;
 
         this.searchButton = new JButton("Search");
         this.searchLabel = new JLabel("");
@@ -41,7 +45,7 @@ public class SearchButtonPanel extends JPanel {
                 }
                 searchButton.setEnabled(false);
                 searchLabel.setText("fetching data");
-                searchSwingWorkerFactory.newSearchSwingWorker(searchButton, searchLabel, filters).execute();
+                searchSwingWorkerManager.searchAndDownloadCardsInBackground(filters, new GuiUpdater());
             }
         });
     }
@@ -57,6 +61,39 @@ public class SearchButtonPanel extends JPanel {
         this.add(searchButton, BorderLayout.EAST);
         this.add(searchLabel, BorderLayout.CENTER);
         searchLabel.setHorizontalAlignment(JLabel.CENTER);
+    }
+
+    private class GuiUpdater implements SearchProgressHarvest {
+
+        private int numberOfParts;
+
+        @Override
+        public void started(int numberOfParts) {
+            this.numberOfParts = numberOfParts;
+            searchLabel.setText("downloading - 0/" + numberOfParts);
+        }
+
+        @Override
+        public void partDone(int partNumber) {
+            searchLabel.setText("downloading - " + partNumber + "/" + numberOfParts);
+        }
+
+        @Override
+        public void finished() {
+            searchLabel.setText("showing " + numberOfParts + " cards");
+            searchButton.setEnabled(true);
+            cardsDisplayPanel.load(searchSwingWorkerManager.getFoundCards());
+        }
+
+        @Override
+        public void error() {
+            searchLabel.setText("error");
+            searchButton.setEnabled(true);
+        }
+
+        @Override
+        public void cancelled() {}
+
     }
 
 }

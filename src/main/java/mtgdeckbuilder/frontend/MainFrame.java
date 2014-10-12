@@ -8,9 +8,8 @@ import mtgdeckbuilder.backend.JsonToCardsImageInfosConverter;
 import mtgdeckbuilder.backend.TagFilesManager;
 import mtgdeckbuilder.backend.TagsManager;
 import mtgdeckbuilder.backend.UrlDownloader;
+import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
 import mtgdeckbuilder.topics.AddFilterTopic;
-import mtgdeckbuilder.topics.ProgressTopic;
-import mtgdeckbuilder.topics.SearchTopic;
 import mtgdeckbuilder.topics.TagTopic;
 
 import javax.swing.JFrame;
@@ -26,8 +25,6 @@ import java.awt.event.ComponentEvent;
 public class MainFrame extends JFrame {
 
     private final AddFilterTopic addFilterTopic = new AddFilterTopic();
-    private final ProgressTopic progressTopic = new ProgressTopic();
-    private final SearchTopic searchTopic = new SearchTopic();
     private final TagTopic tagTopic = new TagTopic();
 
     private final NewFilterPanel newFilterPanel;
@@ -42,16 +39,14 @@ public class MainFrame extends JFrame {
         super("MTG Deck Builder");
 
         // backend
-        SearchSwingWorkerFactory searchSwingWorkerFactory = new SearchSwingWorkerFactory(
+        SearchSwingWorkerManager searchSwingWorkerManager = new SearchSwingWorkerManager(
                 new FilterToUrlConverter(),
                 new UrlDownloader(),
                 new JsonToCardsImageInfosConverter(),
                 new CardImageDownloader(
                         Config.cardsDirectory(),
-                        new ImageDownloader(),
-                        progressTopic
-                ),
-                searchTopic
+                        new ImageDownloader()
+                )
         );
         CardImageLoader cardImageLoader = new CardImageLoader(Config.cardsDirectory());
         TagsManager tagsManager = new TagsManager(new TagFilesManager(Config.tagsDirectory()));
@@ -59,8 +54,8 @@ public class MainFrame extends JFrame {
         // frontend
         this.newFilterPanel = new NewFilterPanel(addFilterTopic);
         this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
-        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, searchSwingWorkerFactory);
-        this.cardsDisplayPanel = new SearchedCardsDisplayPanel(cardImageLoader, searchTopic);
+        this.cardsDisplayPanel = new CardsDisplayPanel(cardImageLoader);
+        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager);
         this.tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
         this.tagAddPanel = new TagAddPanel(tagsManager, tagTopic);
         this.cardTaggingPanel = new CardTaggingPanel(cardsDisplayPanel, tagsManager, tagTopic);
