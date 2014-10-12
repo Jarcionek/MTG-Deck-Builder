@@ -5,8 +5,7 @@ import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import org.mockito.ArgumentCaptor;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,9 +21,8 @@ import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
-import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,17 +45,15 @@ public class SearchButtonPanelWithSearchProgressHarvestTest {
 
     @Before
     public void setUp() {
+        ArgumentCaptor<SearchProgressHarvest> argumentCaptor = ArgumentCaptor.forClass(SearchProgressHarvest.class);
+        doNothing().when(searchSwingWorkerManager).searchAndDownloadCardsInBackground(anyList(), argumentCaptor.capture());
         when(activeFiltersPanel.getFilters()).thenReturn(FILTERS);
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                searchProgressHarvest = (SearchProgressHarvest) invocation.getArguments()[1];
-                return null;
-            }
-        }).when(searchSwingWorkerManager).searchAndDownloadCardsInBackground(anyList(), any(SearchProgressHarvest.class));
+
         searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
         searchLabel = findComponentRecursively(searchButtonPanel, "searchLabel", JLabel.class);
         click(searchButton);
+
+        searchProgressHarvest = argumentCaptor.getValue();
     }
 
     @Test

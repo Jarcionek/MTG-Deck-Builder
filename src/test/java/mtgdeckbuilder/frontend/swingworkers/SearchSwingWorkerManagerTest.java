@@ -82,22 +82,22 @@ public class SearchSwingWorkerManagerTest {
     }
 
     @Test
-    public void providesFoundCards() {
-        doNotifyLock().when(searchProgressHarvest).finished();
-
-        searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
-
-        waitUntilLockNotified();
-        assertEquals(newArrayList("name1", "name2"), searchSwingWorkerManager.getFoundCards());
-    }
-
-    @Test
     public void notifiesSearchProgressHarvestWhenFinished() {
         doNotifyLock().when(searchProgressHarvest).finished();
 
         searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
 
         waitUntilLockNotified();
+    }
+
+    @Test
+    public void providesFoundCardsWhenFinished() {
+        doNotifyLock().when(searchProgressHarvest).finished();
+
+        searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
+
+        waitUntilLockNotified();
+        assertEquals(newArrayList("name1", "name2"), searchSwingWorkerManager.getFoundCards());
     }
 
     @Test
