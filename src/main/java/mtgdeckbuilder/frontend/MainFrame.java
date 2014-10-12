@@ -10,6 +10,7 @@ import mtgdeckbuilder.backend.TagsManager;
 import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
 import mtgdeckbuilder.frontend.topics.AddFilterTopic;
+import mtgdeckbuilder.frontend.topics.SearchTopic;
 import mtgdeckbuilder.frontend.topics.TagTopic;
 
 import javax.swing.JFrame;
@@ -22,12 +23,12 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-//TODO Jarek: untested!
 @SuppressWarnings("FieldCanBeLocal")
 public class MainFrame extends JFrame {
 
     private final AddFilterTopic addFilterTopic = new AddFilterTopic();
     private final TagTopic tagTopic = new TagTopic();
+    private final SearchTopic searchTopic = new SearchTopic();
 
     private final NewFilterPanel newFilterPanel;
     private final ActiveFiltersPanel activeFiltersPanel;
@@ -57,8 +58,8 @@ public class MainFrame extends JFrame {
         this.newFilterPanel = new NewFilterPanel(addFilterTopic);
         this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
         this.cardsDisplayPanel = new CardsDisplayPanel(cardImageLoader);
-        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, tagTopic);
-        this.tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
+        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, searchTopic, tagTopic);
+        this.tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, searchTopic, tagTopic);
         this.tagAddPanel = new TagAddPanel(tagsManager, tagTopic);
         this.cardTaggingPanel = new CardTaggingPanel(cardsDisplayPanel, tagsManager, tagTopic);
 

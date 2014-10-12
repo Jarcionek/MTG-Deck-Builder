@@ -4,6 +4,7 @@ import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
+import mtgdeckbuilder.frontend.topics.SearchTopic;
 import mtgdeckbuilder.frontend.topics.TagTopic;
 
 import javax.swing.JButton;
@@ -20,13 +21,20 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
     private final CardsDisplayPanel cardsDisplayPanel;
     private final SearchSwingWorkerManager searchSwingWorkerManager;
 
+    private final SearchTopic searchTopic;
+
     private final JButton searchButton;
     private final JLabel searchLabel;
 
-    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel, CardsDisplayPanel cardsDisplayPanel, SearchSwingWorkerManager searchSwingWorkerManager, TagTopic tagTopic) {
+    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel,
+                             CardsDisplayPanel cardsDisplayPanel,
+                             SearchSwingWorkerManager searchSwingWorkerManager,
+                             SearchTopic searchTopic,
+                             TagTopic tagTopic) {
         this.activeFiltersPanel = activeFiltersPanel;
         this.cardsDisplayPanel = cardsDisplayPanel;
         this.searchSwingWorkerManager = searchSwingWorkerManager;
+        this.searchTopic = searchTopic;
 
         this.searchButton = new JButton("Search");
         this.searchLabel = new JLabel("");
@@ -41,6 +49,7 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
         this.searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                searchTopic.notifySearchStarted();
                 List<Filter> filters = activeFiltersPanel.getFilters();
                 if (filters.isEmpty()) {
                     searchLabel.setText("you need at least one filter to search");

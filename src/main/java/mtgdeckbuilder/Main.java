@@ -30,6 +30,4 @@ public class Main {
 
     2. when untagging the card, remove it from the currently shown cards (in CardsDisplayPanel)
 
-    3. when clicking search, clear tag selection
-
  */

@@ -3,6 +3,7 @@ package mtgdeckbuilder.frontend;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
+import mtgdeckbuilder.frontend.topics.SearchTopic;
 import mtgdeckbuilder.frontend.topics.TagTopic;
 import org.junit.Test;
 
@@ -36,9 +37,10 @@ public class SearchButtonPanelTest {
     private ActiveFiltersPanel activeFiltersPanel = mock(ActiveFiltersPanel.class);
     private CardsDisplayPanel cardsDisplayPanel = mock(CardsDisplayPanel.class);
     private SearchSwingWorkerManager searchSwingWorkerManager = mock(SearchSwingWorkerManager.class);
+    private SearchTopic searchTopic = mock(SearchTopic.class);
     private TagTopic tagTopic = mock(TagTopic.class);
 
-    private SearchButtonPanel searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, tagTopic);
+    private SearchButtonPanel searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, searchTopic, tagTopic);
 
     @Test
     public void callsSearchSwingWorkerManagerWhenButtonIsPressed() {
@@ -78,6 +80,26 @@ public class SearchButtonPanelTest {
         searchButtonPanel.tagSelected("this-is-a-tag-name");
 
         assertEquals("unexpected searchLabel's text", "showing this-is-a-tag-name", searchLabel.getText());
+    }
+
+    @Test
+    public void notifiesSearchTopicAboutSearchStartedWhenPressingSearchButtonWhenThereAreSomeFilters() {
+        JButton searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
+        when(activeFiltersPanel.getFilters()).thenReturn(FILTERS);
+
+        click(searchButton);
+
+        verify(searchTopic, times(1)).notifySearchStarted();
+    }
+
+    @Test
+    public void notifiesSearchTopicAboutSearchStartedWhenPressingSearchButtonWhenThereAreNoFilters() {
+        JButton searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
+        when(activeFiltersPanel.getFilters()).thenReturn(NO_FILTERS);
+
+        click(searchButton);
+
+        verify(searchTopic, times(1)).notifySearchStarted();
     }
 
 }

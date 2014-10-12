@@ -3,6 +3,7 @@ package mtgdeckbuilder.frontend;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
+import mtgdeckbuilder.frontend.topics.SearchTopic;
 import mtgdeckbuilder.frontend.topics.TagTopic;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,13 +38,14 @@ public class SearchButtonPanelWithSearchProgressHarvestTest {
     private final ActiveFiltersPanel activeFiltersPanel = mock(ActiveFiltersPanel.class);
     private final CardsDisplayPanel cardsDisplayPanel = mock(CardsDisplayPanel.class);
     private final SearchSwingWorkerManager searchSwingWorkerManager = mock(SearchSwingWorkerManager.class);
+    private final SearchTopic searchTopic = mock(SearchTopic.class);
     private final TagTopic tagTopic = mock(TagTopic.class);
 
     private SearchProgressHarvest searchProgressHarvest;
     private JButton searchButton;
     private JLabel searchLabel;
 
-    private final SearchButtonPanel searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, tagTopic);
+    private final SearchButtonPanel searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, searchTopic, tagTopic);
 
     @Before
     public void setUp() {
