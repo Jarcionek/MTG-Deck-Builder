@@ -21,6 +21,7 @@ import static mtgdeckbuilder.util.FrontEndTestingUtils.click;
 import static mtgdeckbuilder.util.FrontEndTestingUtils.findComponentRecursively;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
@@ -56,7 +57,7 @@ public class SearchButtonPanelTest {
     }
 
     @Test
-    public void doesNothingWhenThereAreNoFilters() {
+    public void doesNothingWhenThereAreNoFiltersWhenButtonIsPressed() {
         when(activeFiltersPanel.getFilters()).thenReturn(NO_FILTERS);
 
         JButton searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
@@ -74,12 +75,23 @@ public class SearchButtonPanelTest {
     }
 
     @Test
-    public void setsTextOnLabelWhenTopicNotifiesAboutTagSelected() {
+    public void setsTextOnLabelWhenTagTopicNotifiesAboutTagSelected() {
         JLabel searchLabel = findComponentRecursively(searchButtonPanel, "searchLabel", JLabel.class);
 
         searchButtonPanel.tagSelected("this-is-a-tag-name");
 
         assertEquals("unexpected searchLabel's text", "showing this-is-a-tag-name", searchLabel.getText());
+    }
+
+    @Test
+    public void cancelsBackgroundDownloadingThreadAndEnablesButtonWhenTagTopicNotifiesAboutTagSelected() {
+        JButton searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
+        searchButton.setEnabled(false);
+
+        searchButtonPanel.tagSelected("any tag");
+
+        verify(searchSwingWorkerManager).cancel();
+        assertTrue("searchButton should be enabled but was not", searchButton.isEnabled());
     }
 
     @Test

@@ -9,6 +9,8 @@ import org.mockito.InOrder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractSet;
+import java.util.Iterator;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.Mockito.inOrder;
@@ -94,6 +96,56 @@ public class CardImageDownloaderTest {
         inOrder.verify(progressHarvest).downloaded(2);
         inOrder.verify(progressHarvest).downloaded(3);
         inOrder.verifyNoMoreInteractions();
+    }
+
+    @Test(timeout = 100)
+    public void stopsExecutionWhenThreadIsInterrupted() throws InterruptedException {
+        // given
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                cardImageDownloader.download(new InfiniteSet(), progressHarvest);
+            }
+        };
+
+        // when
+        thread.start();
+        thread.interrupt();
+
+        // then
+        thread.join(); // should not timeout
+    }
+
+
+    private static class InfiniteSet extends AbstractSet<CardImageInfo> {
+
+        private final CardImageInfo element = new CardImageInfo(0, "element");
+
+        @Override
+        public Iterator<CardImageInfo> iterator() {
+            return new Iterator<CardImageInfo>() {
+                @Override
+                public boolean hasNext() {
+                    return true;
+                }
+
+                @Override
+                public CardImageInfo next() {
+                    return element;
+                }
+
+                @Override
+                public void remove() {
+                    throw new UnsupportedOperationException();
+                }
+            };
+        }
+
+        @Override
+        public int size() {
+            return Integer.MAX_VALUE;
+        }
+
     }
 
 }

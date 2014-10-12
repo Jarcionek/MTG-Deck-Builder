@@ -44,7 +44,7 @@ public class SearchSwingWorkerManager {
         swingWorker.execute();
     }
 
-    public final void cancel() {
+    public void cancel() {
         if (swingWorker != null) {
             swingWorker.cancel(true);
         }

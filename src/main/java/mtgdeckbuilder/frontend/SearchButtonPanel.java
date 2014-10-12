@@ -86,7 +86,9 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
 
     @Override
     public void tagSelected(String tagName) {
+        searchSwingWorkerManager.cancel();
         searchLabel.setText("showing " + tagName);
+        searchButton.setEnabled(true);
     }
 
     private class StatusUpdater implements SearchProgressHarvest {

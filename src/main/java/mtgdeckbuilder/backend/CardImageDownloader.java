@@ -25,6 +25,9 @@ public class CardImageDownloader {
     public void download(Set<CardImageInfo> cardImageInfos, CardImageDownloadProgressHarvest progressHarvest) {
         int count = 0;
         for (CardImageInfo cardImageInfo : cardImageInfos) {
+            if (Thread.currentThread().isInterrupted()) {
+                break;
+            }
 
             File lowResFile = new File(cardsDirectory, "low/" + cardImageInfo.getName() + ".jpg");
             if (!lowResFile.exists()) {
