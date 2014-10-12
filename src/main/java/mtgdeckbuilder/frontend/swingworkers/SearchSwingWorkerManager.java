@@ -9,6 +9,8 @@ import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Url;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.SwingWorker;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.Set;
 import java.util.concurrent.CancellationException;
 
 public class SearchSwingWorkerManager {
+
+    private final Logger log = LoggerFactory.getLogger(SearchSwingWorkerManager.class);
 
     private final FilterToUrlConverter filterToUrlConverter;
     private final UrlDownloader urlDownloader;
@@ -97,14 +101,13 @@ public class SearchSwingWorkerManager {
         protected void done() {
             try {
                 foundCards = get();
+                searchProgressHarvest.finished();
             } catch (CancellationException e) {
-                searchProgressHarvest.cancelled(); //TODO Jarek: is this only for testing? replace with logger
-                return;
+                log.info("background thread cancelled");
             } catch (Exception e) {
+                log.error("error when downloading cards in background thread", e);
                 searchProgressHarvest.error();
-                throw new RuntimeException(e); //TODO Jarek: this will look ugly in terminal, use logger instead (and use no-op in test)
             }
-            searchProgressHarvest.finished();
         }
 
     }

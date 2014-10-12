@@ -91,9 +91,6 @@ public class SearchButtonPanel extends JPanel {
             searchButton.setEnabled(true);
         }
 
-        @Override
-        public void cancelled() {}
-
     }
 
 }

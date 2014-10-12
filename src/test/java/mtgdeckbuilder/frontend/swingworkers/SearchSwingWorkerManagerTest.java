@@ -10,6 +10,11 @@ import mtgdeckbuilder.backend.UrlDownloader;
 import mtgdeckbuilder.data.CardImageInfo;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.data.Url;
+import org.apache.log4j.Appender;
+import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggingEvent;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +33,7 @@ import static mtgdeckbuilder.data.Field.color;
 import static mtgdeckbuilder.data.Field.manacost;
 import static mtgdeckbuilder.data.Function.lt;
 import static mtgdeckbuilder.data.Function.m;
+import static org.apache.log4j.Logger.getRootLogger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -47,10 +53,24 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("unchecked")
 public class SearchSwingWorkerManagerTest {
 
+    private static final Appender NO_OP_APPENDER = new AppenderSkeleton() {
+        @Override
+        protected void append(LoggingEvent loggingEvent) {}
+
+        @Override
+        public void close() {}
+
+        @Override
+        public boolean requiresLayout() {
+            return false;
+        }
+    };
+
     private static final List<Filter> FILTERS = ImmutableList.of(new Filter(color, m, "blue"), new Filter(manacost, lt, "3"));
     private static final String URL = "blah.com";
     private static final String JSON = "this is cards data in json format";
     private static final ImmutableSet<CardImageInfo> CARD_IMAGE_INFOS = ImmutableSet.of(new CardImageInfo(1, "name1"), new CardImageInfo(2, "name2"));
+
 
     @Rule public final Timeout timeout = new Timeout(1000);
 
@@ -69,6 +89,12 @@ public class SearchSwingWorkerManagerTest {
         when(filterToUrlConverter.convert(FILTERS)).thenReturn(URL);
         when(urlDownloader.download(argThat(sameBeanAs(new Url(URL))))).thenReturn(JSON);
         when(jsonToCardsImageInfosConverter.convert(JSON)).thenReturn(CARD_IMAGE_INFOS);
+    }
+
+    @Before
+    public void setNoOpLogger() {
+        getRootLogger().removeAllAppenders();
+        getRootLogger().addAppender(NO_OP_APPENDER);
     }
 
     @Test
@@ -135,7 +161,7 @@ public class SearchSwingWorkerManagerTest {
     @Test
     public void notifiesAboutError() {
         doThrow(new RuntimeException("this is expected exception")).when(cardImageDownloader).download(anySet(), any(CardImageDownloadProgressHarvest.class));
-        doNotifyLock().when(searchProgressHarvest).error();
+        notifyLockWhenLogging(Level.ERROR);
 
         searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvest);
 
@@ -157,14 +183,8 @@ public class SearchSwingWorkerManagerTest {
 
     @Test
     public void interruptsRunningThreadWhenCancelled() {
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                notifyLock();
-                Thread.sleep(10000);
-                return null;
-            }
-        }).when(cardImageDownloader).download(anySet(), any(CardImageDownloadProgressHarvest.class));
+        doNotifyLockAndGoToSleep().when(cardImageDownloader).download(anySet(), any(CardImageDownloadProgressHarvest.class));
+        notifyLockWhenLogging(Level.INFO);
         SearchProgressHarvestStub searchProgressHarvestStub = spy(new SearchProgressHarvestStub());
 
         searchSwingWorkerManager.searchAndDownloadCardsInBackground(FILTERS, searchProgressHarvestStub);
@@ -173,10 +193,9 @@ public class SearchSwingWorkerManagerTest {
 
         searchSwingWorkerManager.cancel();
 
-        waitUntilLockNotified(); // wait until thread is cancelled
+        waitUntilLockNotified(); // wait until thread is cancelled and logger is informed
         verify(searchProgressHarvestStub, never()).finished();
         verify(searchProgressHarvestStub, never()).error();
-        verify(searchProgressHarvestStub, times(1)).cancelled();
         searchProgressHarvestStub.verifyAllCallsWereOnEventDispatchThread();
     }
 
@@ -187,7 +206,6 @@ public class SearchSwingWorkerManagerTest {
         private boolean partDoneWasOnEventDispatchThread = true;
         private boolean finishedWasOnEventDispatchThread = true;
         private boolean errorWasOnEventDispatchThread = true;
-        private boolean cancelledWasOnEventDispatchThread = true;
 
         @Override
         public void started(int numberOfParts) {
@@ -211,20 +229,32 @@ public class SearchSwingWorkerManagerTest {
             notifyLock();
         }
 
-        @Override
-        public void cancelled() {
-            cancelledWasOnEventDispatchThread = SwingUtilities.isEventDispatchThread();
-            notifyLock();
-        }
-
         public void verifyAllCallsWereOnEventDispatchThread() {
             assertTrue("SearchProgressHarvest.started() should be called on event dispatch thread, but was not", startedWasOnEventDispatchThread);
             assertTrue("SearchProgressHarvest.partDone() should be called on event dispatch thread, but was not", partDoneWasOnEventDispatchThread);
             assertTrue("SearchProgressHarvest.finished() should be called on event dispatch thread, but was not", finishedWasOnEventDispatchThread);
             assertTrue("SearchProgressHarvest.error() should be called on event dispatch thread, but was not", errorWasOnEventDispatchThread);
-            assertTrue("SearchProgressHarvest.cancel() should be called on event dispatch thread, but was not", cancelledWasOnEventDispatchThread);
         }
 
+    }
+
+    private void notifyLockWhenLogging(final Level level) {
+        Logger.getRootLogger().addAppender(new AppenderSkeleton() {
+            @Override
+            protected void append(LoggingEvent loggingEvent) {
+                if (loggingEvent.getLevel().equals(level)) {
+                    notifyLock();
+                }
+            }
+
+            @Override
+            public void close() {}
+
+            @Override
+            public boolean requiresLayout() {
+                return false;
+            }
+        });
     }
 
     private void waitUntilLockNotified() {
@@ -240,6 +270,17 @@ public class SearchSwingWorkerManagerTest {
             @Override
             public Void answer(InvocationOnMock invocation) throws Throwable {
                 notifyLock();
+                return null;
+            }
+        });
+    }
+
+    private Stubber doNotifyLockAndGoToSleep() {
+        return doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                notifyLock();
+                Thread.sleep(10000);
                 return null;
             }
         });

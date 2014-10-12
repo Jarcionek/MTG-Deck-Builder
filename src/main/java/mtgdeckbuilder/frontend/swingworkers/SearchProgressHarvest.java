@@ -6,6 +6,5 @@ public interface SearchProgressHarvest {
     void partDone(int partNumber);
     void finished();
     void error();
-    void cancelled();
 
 }
