@@ -93,7 +93,7 @@ public class TagViewer extends JPanel implements TagTopic.Subscriber, SearchTopi
     public void tagSelected(String tagName) {}
 
     @Override
-    public void searchStarted() {
+    public void startingSearch() {
         list.clearSelection();
     }
 

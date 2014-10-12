@@ -49,7 +49,7 @@ public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
         this.searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                searchTopic.notifySearchStarted();
+                searchTopic.notifyStartingSearch();
                 List<Filter> filters = activeFiltersPanel.getFilters();
                 if (filters.isEmpty()) {
                     searchLabel.setText("you need at least one filter to search");

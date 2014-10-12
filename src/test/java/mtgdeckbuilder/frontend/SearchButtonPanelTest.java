@@ -95,23 +95,23 @@ public class SearchButtonPanelTest {
     }
 
     @Test
-    public void notifiesSearchTopicAboutSearchStartedWhenPressingSearchButtonWhenThereAreSomeFilters() {
+    public void notifiesSearchTopicAboutStartingSearchWhenPressingSearchButtonWhenThereAreSomeFilters() {
         JButton searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
         when(activeFiltersPanel.getFilters()).thenReturn(FILTERS);
 
         click(searchButton);
 
-        verify(searchTopic, times(1)).notifySearchStarted();
+        verify(searchTopic, times(1)).notifyStartingSearch();
     }
 
     @Test
-    public void notifiesSearchTopicAboutSearchStartedWhenPressingSearchButtonWhenThereAreNoFilters() {
+    public void notifiesSearchTopicAboutStartingSearchWhenPressingSearchButtonWhenThereAreNoFilters() {
         JButton searchButton = findComponentRecursively(searchButtonPanel, "searchButton", JButton.class);
         when(activeFiltersPanel.getFilters()).thenReturn(NO_FILTERS);
 
         click(searchButton);
 
-        verify(searchTopic, times(1)).notifySearchStarted();
+        verify(searchTopic, times(1)).notifyStartingSearch();
     }
 
 }

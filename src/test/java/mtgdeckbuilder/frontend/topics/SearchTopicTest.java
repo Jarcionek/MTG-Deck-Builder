@@ -22,11 +22,11 @@ public class SearchTopicTest {
     }
 
     @Test
-    public void notifiesSubscribersAboutSearchStarted() {
-        topic.notifySearchStarted();
+    public void notifiesSubscribersAboutStartingSearch() {
+        topic.notifyStartingSearch();
 
-        verify(subscriberOne, times(1)).searchStarted();
-        verify(subscriberTwo, times(1)).searchStarted();
+        verify(subscriberOne, times(1)).startingSearch();
+        verify(subscriberTwo, times(1)).startingSearch();
         verifyNoMoreInteractions(subscriberOne, subscriberTwo);
     }
 

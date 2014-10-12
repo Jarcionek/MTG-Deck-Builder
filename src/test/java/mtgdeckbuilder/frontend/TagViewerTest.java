@@ -112,7 +112,7 @@ public class TagViewerTest {
     }
 
     @Test
-    public void clearsSelectionWhenSearchTopicNotifiesAboutSearchStarted() {
+    public void clearsSelectionWhenSearchTopicNotifiesAboutStartingSearch() {
         // given
         when(tagsManager.getAvailableTags()).thenReturn(newArrayList("one", "two", "three"));
         tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, searchTopic, tagTopic);
@@ -120,7 +120,7 @@ public class TagViewerTest {
         jlist.setSelectedIndex(2);
 
         // when
-        tagViewer.searchStarted();
+        tagViewer.startingSearch();
 
         // then
         assertEquals("Should have no selection but selected index was incorrect", -1, jlist.getSelectedIndex());

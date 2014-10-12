@@ -11,14 +11,14 @@ public class SearchTopic {
         subscribers.add(subscriber);
     }
 
-    public void notifySearchStarted() {
+    public void notifyStartingSearch() {
         for (Subscriber subscriber : subscribers) {
-            subscriber.searchStarted();
+            subscriber.startingSearch();
         }
     }
 
     public static interface Subscriber {
-        void searchStarted();
+        void startingSearch();
     }
 
 }
