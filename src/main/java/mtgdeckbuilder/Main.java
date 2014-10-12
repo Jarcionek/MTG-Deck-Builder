@@ -32,7 +32,4 @@ public class Main {
 
     3. when clicking search, clear tag selection
 
-    4. after selecting a tag, search label still shows the result of last search (e.g. "showing 28 cards"),
-       change it to "showing <tag>" or at least clear it
-
  */

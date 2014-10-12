@@ -3,6 +3,7 @@ package mtgdeckbuilder.frontend;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
+import mtgdeckbuilder.frontend.topics.TagTopic;
 import org.junit.Test;
 
 import javax.swing.JButton;
@@ -35,8 +36,9 @@ public class SearchButtonPanelTest {
     private ActiveFiltersPanel activeFiltersPanel = mock(ActiveFiltersPanel.class);
     private CardsDisplayPanel cardsDisplayPanel = mock(CardsDisplayPanel.class);
     private SearchSwingWorkerManager searchSwingWorkerManager = mock(SearchSwingWorkerManager.class);
+    private TagTopic tagTopic = mock(TagTopic.class);
 
-    private SearchButtonPanel searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager);
+    private SearchButtonPanel searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, tagTopic);
 
     @Test
     public void callsSearchSwingWorkerManagerWhenButtonIsPressed() {
@@ -62,6 +64,20 @@ public class SearchButtonPanelTest {
 
         assertEquals("unexpected searchLabel's text", "you need at least one filter to search", searchLabel.getText());
         verifyZeroInteractions(searchSwingWorkerManager);
+    }
+
+    @Test
+    public void subscribesToTagTopic() {
+        verify(tagTopic, times(1)).addSubscriber(searchButtonPanel);
+    }
+
+    @Test
+    public void setsTextOnLabelWhenTopicNotifiesAboutTagSelected() {
+        JLabel searchLabel = findComponentRecursively(searchButtonPanel, "searchLabel", JLabel.class);
+
+        searchButtonPanel.tagSelected("this-is-a-tag-name");
+
+        assertEquals("unexpected searchLabel's text", "showing this-is-a-tag-name", searchLabel.getText());
     }
 
 }

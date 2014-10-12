@@ -4,6 +4,7 @@ import mtgdeckbuilder.TestCode;
 import mtgdeckbuilder.data.Filter;
 import mtgdeckbuilder.frontend.swingworkers.SearchProgressHarvest;
 import mtgdeckbuilder.frontend.swingworkers.SearchSwingWorkerManager;
+import mtgdeckbuilder.frontend.topics.TagTopic;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class SearchButtonPanel extends JPanel {
+public class SearchButtonPanel extends JPanel implements TagTopic.Subscriber {
 
     private final ActiveFiltersPanel activeFiltersPanel;
     private final CardsDisplayPanel cardsDisplayPanel;
@@ -22,7 +23,7 @@ public class SearchButtonPanel extends JPanel {
     private final JButton searchButton;
     private final JLabel searchLabel;
 
-    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel, CardsDisplayPanel cardsDisplayPanel, SearchSwingWorkerManager searchSwingWorkerManager) {
+    public SearchButtonPanel(ActiveFiltersPanel activeFiltersPanel, CardsDisplayPanel cardsDisplayPanel, SearchSwingWorkerManager searchSwingWorkerManager, TagTopic tagTopic) {
         this.activeFiltersPanel = activeFiltersPanel;
         this.cardsDisplayPanel = cardsDisplayPanel;
         this.searchSwingWorkerManager = searchSwingWorkerManager;
@@ -32,6 +33,8 @@ public class SearchButtonPanel extends JPanel {
         setNames();
         configureComponents();
         createLayout();
+
+        tagTopic.addSubscriber(this);
     }
 
     private void configureComponents() {
@@ -45,7 +48,7 @@ public class SearchButtonPanel extends JPanel {
                 }
                 searchButton.setEnabled(false);
                 searchLabel.setText("fetching data");
-                searchSwingWorkerManager.searchAndDownloadCardsInBackground(filters, new GuiUpdater());
+                searchSwingWorkerManager.searchAndDownloadCardsInBackground(filters, new StatusUpdater());
             }
         });
     }
@@ -63,7 +66,21 @@ public class SearchButtonPanel extends JPanel {
         searchLabel.setHorizontalAlignment(JLabel.CENTER);
     }
 
-    private class GuiUpdater implements SearchProgressHarvest {
+    @Override
+    public void cardTagged(String cardName, String tagName) {}
+
+    @Override
+    public void cardUntagged(String cardName, String tagName) {}
+
+    @Override
+    public void tagCreated(String tagName) {}
+
+    @Override
+    public void tagSelected(String tagName) {
+        searchLabel.setText("showing " + tagName);
+    }
+
+    private class StatusUpdater implements SearchProgressHarvest {
 
         private int numberOfParts;
 

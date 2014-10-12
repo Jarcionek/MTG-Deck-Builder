@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
         this.newFilterPanel = new NewFilterPanel(addFilterTopic);
         this.activeFiltersPanel = new ActiveFiltersPanel(addFilterTopic);
         this.cardsDisplayPanel = new CardsDisplayPanel(cardImageLoader);
-        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager);
+        this.searchButtonPanel = new SearchButtonPanel(activeFiltersPanel, cardsDisplayPanel, searchSwingWorkerManager, tagTopic);
         this.tagViewer = new TagViewer(tagsManager, cardsDisplayPanel, tagTopic);
         this.tagAddPanel = new TagAddPanel(tagsManager, tagTopic);
         this.cardTaggingPanel = new CardTaggingPanel(cardsDisplayPanel, tagsManager, tagTopic);
