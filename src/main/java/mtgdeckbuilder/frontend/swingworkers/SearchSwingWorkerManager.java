@@ -48,7 +48,7 @@ public class SearchSwingWorkerManager {
         return swingWorker.foundCards;
     }
 
-    private class SearchSwingWorker extends SwingWorker<Object, ProgressUpdate> {
+    private class SearchSwingWorker extends SwingWorker<List<String>, ProgressUpdate> {
 
         private final List<Filter> filters;
         private final SearchProgressHarvest searchProgressHarvest;
@@ -68,7 +68,7 @@ public class SearchSwingWorkerManager {
         }
 
         @Override
-        protected Object doInBackground() {
+        protected List<String> doInBackground() {
             String url = filterToUrlConverter.convert(filters);
             String json = urlDownloader.download(new Url(url));
             Set<CardImageInfo> cardImageInfos = jsonToCardsImageInfosConverter.convert(json);
@@ -80,9 +80,7 @@ public class SearchSwingWorkerManager {
             for (CardImageInfo cardImageInfo : cardImageInfos) {
                 builder.add(cardImageInfo.getName());
             }
-            foundCards = builder.build();
-
-            return null;
+            return builder.build();
         }
 
         @Override
@@ -98,7 +96,7 @@ public class SearchSwingWorkerManager {
         @Override
         protected void done() {
             try {
-                get();
+                foundCards = get();
             } catch (CancellationException e) {
                 searchProgressHarvest.cancelled(); //TODO Jarek: is this only for testing? replace with logger
                 return;
