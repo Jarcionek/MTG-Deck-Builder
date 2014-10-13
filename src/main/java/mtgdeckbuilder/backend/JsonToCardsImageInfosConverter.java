@@ -3,6 +3,7 @@ package mtgdeckbuilder.backend;
 import mtgdeckbuilder.data.CardImageInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,7 +31,11 @@ public class JsonToCardsImageInfosConverter {
         Set<CardImageInfo> set = new HashSet<>();
 
         for (Map.Entry<String, Integer> entry : nameToIdMap.entrySet()) {
-            set.add(new CardImageInfo(entry.getValue(), entry.getKey()));
+            if (entry.getKey().contains("/")) { //TODO Jarek: temporary hack to filter out split cards
+                LoggerFactory.getLogger(JsonToCardsImageInfosConverter.class).warn("skipping card: " + entry.getKey());
+            } else {
+                set.add(new CardImageInfo(entry.getValue(), entry.getKey()));
+            }
         }
 
         return set;
